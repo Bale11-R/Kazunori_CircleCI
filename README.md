@@ -1,0 +1,2 @@
+# Kazunori_CircleCI
+CircleCI
