@@ -29,7 +29,7 @@ Resources:
     Kuratasubnetpub1a02:
         Type: AWS::EC2::Subnet
         Properties:
-            AvailabilityZone: ap-northeast-1a
+          AvailabilityZone: !Sub ${AWS::Region}a
             VpcId: !Ref Kuratavpc02
             CidrBlock: 10.0.1.0/24
             MapPublicIpOnLaunch: true
@@ -40,7 +40,7 @@ Resources:
     Kuratasubnetpub1c02:
         Type: AWS::EC2::Subnet
         Properties:
-            AvailabilityZone: ap-northeast-1c
+            AvailabilityZone: !Sub ${AWS::Region}c 
             VpcId: !Ref Kuratavpc02
             CidrBlock: 10.0.2.0/24
             MapPublicIpOnLaunch: true
@@ -51,7 +51,7 @@ Resources:
     Kuratasubnetpri1a02:
         Type: AWS::EC2::Subnet
         Properties:
-            AvailabilityZone: ap-northeast-1a
+          AvailabilityZone: !Sub ${AWS::Region}a
             VpcId: !Ref Kuratavpc02
             CidrBlock: 10.0.3.0/24
             MapPublicIpOnLaunch: false
@@ -62,7 +62,7 @@ Resources:
     Kuratasubnetpri1c02:
         Type: AWS::EC2::Subnet
         Properties:
-            AvailabilityZone: ap-northeast-1c
+          AvailabilityZone: !Sub ${AWS::Region}c
             VpcId: !Ref Kuratavpc02
             CidrBlock: 10.0.4.0/24
             MapPublicIpOnLaunch: false
