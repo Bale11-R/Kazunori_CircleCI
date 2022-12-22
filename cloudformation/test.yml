@@ -1,0 +1,149 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Kazunori_Kurata_raisetech_CloudFormation
+
+Resources:
+    Kuratavpc02:
+        Type: AWS::EC2::VPC
+        Properties:
+            CidrBlock: 10.0.0.0/16
+            EnableDnsSupport: 'true'
+            EnableDnsHostnames: 'false'
+            Tags:
+            - Key: Name
+              Value: Kuratavpc02
+
+    Kurataigw02:
+        Type: AWS::EC2::InternetGateway
+        Properties:
+            Tags:
+            - Key: Name
+              Value: Kurataigw02
+
+    AttachGateway:
+        Type: AWS::EC2::VPCGatewayAttachment
+        Properties:
+            VpcId: !Ref Kuratavpc02
+            InternetGatewayId: !Ref Kurataigw02
+
+    Kuratasubnetpub1a02:
+        Type: AWS::EC2::Subnet
+        Properties:
+            AvailabilityZone: ap-northeast-1a
+            VpcId: !Ref Kuratavpc02
+            CidrBlock: 10.0.1.0/24
+            MapPublicIpOnLaunch: true
+            Tags:
+            - Key: Name
+              Value: Kuratasubnetpub1a02
+
+    Kuratasubnetpub1c02:
+        Type: AWS::EC2::Subnet
+        Properties:
+            AvailabilityZone: ap-northeast-1c
+            VpcId: !Ref Kuratavpc02
+            CidrBlock: 10.0.2.0/24
+            MapPublicIpOnLaunch: true
+            Tags:
+            - Key: Name
+              Value: Kuratasubnetpub1c02
+
+    Kuratasubnetpri1a02:
+        Type: AWS::EC2::Subnet
+        Properties:
+            AvailabilityZone: ap-northeast-1a
+            VpcId: !Ref Kuratavpc02
+            CidrBlock: 10.0.3.0/24
+            MapPublicIpOnLaunch: false
+            Tags:
+            - Key: Name
+              Value: Kuratasubnetpri1a02
+
+    Kuratasubnetpri1c02:
+        Type: AWS::EC2::Subnet
+        Properties:
+            AvailabilityZone: ap-northeast-1c
+            VpcId: !Ref Kuratavpc02
+            CidrBlock: 10.0.4.0/24
+            MapPublicIpOnLaunch: false
+            Tags:
+            - Key: Name
+              Value: Kuratasubnetpri1c02
+
+    Kuratartpub02:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref Kuratavpc02
+            Tags:
+            - Key: Name
+              Value: Kuratartpub02
+
+    KuratapubRoute1:
+        Type: AWS::EC2::Route
+        Properties:
+            RouteTableId: !Ref Kuratartpub02
+            DestinationCidrBlock: 0.0.0.0/0
+            GatewayId: !Ref Kurataigw02
+
+    routeTableAssocPublic01:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            SubnetId: !Ref Kuratasubnetpub1a02
+            RouteTableId: !Ref Kuratartpub02
+
+    routeTableAssocPublic02:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            SubnetId: !Ref Kuratasubnetpub1c02
+            RouteTableId: !Ref Kuratartpub02
+
+    Kuratartpri02:
+        Type: AWS::EC2::RouteTable
+        Properties:
+            VpcId: !Ref Kuratavpc02
+            Tags:
+            - Key: Name
+              Value: Kuratartpri02
+
+    routeTableAssocPrivate01:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            SubnetId: !Ref Kuratasubnetpri1a02
+            RouteTableId: !Ref Kuratartpri02
+
+    routeTableAssocPrivate02:
+        Type: AWS::EC2::SubnetRouteTableAssociation
+        Properties:
+            SubnetId: !Ref Kuratasubnetpri1c02
+            RouteTableId: !Ref Kuratartpri02
+
+Outputs:
+    StackVPC:
+        Description: VPC's ID
+        Value: !Ref Kuratavpc02
+        Export:
+            Name: !Sub "${AWS::StackName}-VPCID"
+
+    StackPublicSubnet1A:
+        Description: Public Subnet's ID
+        Value: !Ref Kuratasubnetpub1a02
+        Export:
+            Name: !Sub "${AWS::StackName}-PublicSubnet1A"
+
+    StackPrivateSubnet1A:
+        Description: Private Subnet's ID
+        Value: !Ref Kuratasubnetpri1a02
+        Export:
+            Name: !Sub "${AWS::StackName}-PrivateSubnet1A"
+
+    StackPublicSubnet1C:
+        Description: Public Subnet's ID
+        Value: !Ref Kuratasubnetpub1c02
+        Export:
+            Name: !Sub "${AWS::StackName}-PublicSubnet1C"
+
+    StackPrivateSubnet1C:
+        Description: Private Subnet's ID
+        Value: !Ref Kuratasubnetpri1c02
+        Export:
+            Name: !Sub "${AWS::StackName}-PrivateSubnet1C"
