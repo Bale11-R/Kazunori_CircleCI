@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description:
+    Kazunori_Kurata_raisetech_CloudFormation
+
+Parameters:
+    DBMasterUserName:
+        Default: root
+        Type: String
+    DBMasterUserPassword:
+        Default: Annkw2009tooth
+        Type: String
+    EngineVersion:
+        Default: 8.0.28
+        Type: String
+    StorageType:
+        Default: gp2
+        Type: String
+    InstanceClass:
+        Default: db.t3.micro
+        Type: String
+    StorageSize:
+        Default: 20
+        Type: String
+
+Resources:
+    Kuratadatabase02:
+        Properties:
+            AllocatedStorage: !Ref 'StorageSize'
+            DBInstanceClass: !Ref 'InstanceClass'
+            DBInstanceIdentifier: KurataRDS02
+            DBName: Kuratadatabase02
+            DBSubnetGroupName: !Ref 'DBSubnetGroup'
+            Engine: mysql
+            EngineVersion: !Ref 'EngineVersion'
+            StorageType: !Ref 'StorageType'
+            MasterUserPassword: !Ref 'DBMasterUserPassword'
+            MasterUsername: !Ref 'DBMasterUserName'
+            PubliclyAccessible: 'false'
+            VPCSecurityGroups:
+            - !ImportValue Security-02-Security03
+        Type: AWS::RDS::DBInstance
+
+    DBSubnetGroup:
+        Properties:
+            DBSubnetGroupDescription: sample-rds
+            DBSubnetGroupName: samplerds
+            SubnetIds:
+            - !ImportValue VPC-subnet-2-PrivateSubnet1A
+            - !ImportValue VPC-subnet-2-PrivateSubnet1C
+        Type: AWS::RDS::DBSubnetGroup

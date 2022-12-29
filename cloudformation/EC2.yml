@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Kazunori_Kurata_raisetech_CloudFormation
+
+Parameters:
+  LinuxAMI:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2
+
+Resources:
+    
+    KurataEC202:
+        Type: AWS::EC2::Instance
+        Properties:
+            ImageId: !Ref LinuxAMI
+            KeyName: Kurata_keypair
+            InstanceType: t2.micro
+            InstanceInitiatedShutdownBehavior: stop
+            Tenancy: default
+            NetworkInterfaces:
+                - AssociatePublicIpAddress: "true"
+                  DeviceIndex: "0"
+                  SubnetId: !ImportValue VPC-subnet-2-PublicSubnet1A
+                  GroupSet:
+                      - !ImportValue Security-02-Security02
+
+            Tags:
+                - Key: Name
+                  Value: Kurata_EC2-02
+
+            BlockDeviceMappings:
+                - DeviceName: /dev/xvda
+                  Ebs:
+                      VolumeType: gp2
+                      DeleteOnTermination: true
+                      VolumeSize: 8
+
+Outputs:
+    StackEC2:
+        Description: EC2 ID
+        Value: !Ref KurataEC202
+        Export:
+            Name: !Sub "${AWS::StackName}-EC2ID"

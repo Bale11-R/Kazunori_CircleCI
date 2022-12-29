@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Kazunori_Kurata_raisetech_CloudFormation
+
+Resources:
+    InternetALB:
+        Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+        Properties:
+            Name: Kurata-ALB-02
+            Scheme: internet-facing
+            Type: application
+            SecurityGroups:
+                - !ImportValue Security-02-Security01
+            Subnets:
+                - !ImportValue VPC-subnet-2-PublicSubnet1A
+                - !ImportValue VPC-subnet-2-PublicSubnet1C
+
+    TargetGroupResource:
+        Type: AWS::ElasticLoadBalancingV2::TargetGroup
+        Properties:
+            Name: Kurata-target-02
+            VpcId: !ImportValue VPC-subnet-2-VPCID
+            IpAddressType: ipv4
+            Protocol: HTTP
+            ProtocolVersion: HTTP1
+            Port: 80
+            TargetType: instance
+            Targets:
+                - Id: !ImportValue EC2-01-EC2ID
+                  Port: 80
+            HealthCheckEnabled: true
+            HealthCheckIntervalSeconds: 30
+            HealthCheckPath: /
+            HealthCheckPort: traffic-port
+            HealthCheckProtocol: HTTP
+            HealthCheckTimeoutSeconds: 5
+            HealthyThresholdCount: 5
+            UnhealthyThresholdCount: 2
+            Matcher:
+                HttpCode: 200
+            Tags:
+                - Key: Name
+                  Value: Kurata-target-02
+
+    ALBListenerHTTP:
+        Type: AWS::ElasticLoadBalancingV2::Listener
+        Properties:
+            Port: 80
+            Protocol: HTTP
+            DefaultActions:
+                - TargetGroupArn: !Ref TargetGroupResource
+                  Type: forward
+            LoadBalancerArn: !Ref InternetALB

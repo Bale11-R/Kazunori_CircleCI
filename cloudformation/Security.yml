@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Kazunori_Kurata_raisetech_CloudFormation
+
+Resources:
+    SecurityGroup01:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupName: Kurata-launch-wizard-2
+            GroupDescription: Kurata-launch-wizard-2_CloudFormation
+            VpcId: !ImportValue VPC-subnet-2-VPCID
+            SecurityGroupIngress:
+                - IpProtocol: tcp
+                  CidrIp: 0.0.0.0/0
+                  FromPort: "80"
+                  ToPort: "80"
+                - IpProtocol: tcp
+                  CidrIp: 0.0.0.0/0
+                  FromPort: "443"
+                  ToPort: "443"
+                - IpProtocol: tcp
+                  CidrIp: 0.0.0.0/0
+                  FromPort: "22"
+                  ToPort: "22"
+                - IpProtocol: tcp
+                  CidrIp: 0.0.0.0/0
+                  FromPort: "3000"
+                  ToPort: "3000"
+
+    SecurityGroup02:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupName: Kurata_toEC2-2
+            GroupDescription: Kurata_toEC2-2_CloudFormation
+            VpcId: !ImportValue VPC-subnet-2-VPCID
+            SecurityGroupIngress:
+                - IpProtocol: tcp
+                  CidrIp: 0.0.0.0/0
+                  FromPort: "80"
+                  ToPort: "80"
+                - IpProtocol: tcp
+                  CidrIp: 0.0.0.0/0
+                  FromPort: "443"
+                  ToPort: "443"
+                - IpProtocol: tcp
+                  CidrIp: 0.0.0.0/0
+                  FromPort: "22"
+                  ToPort: "22"
+                - IpProtocol: tcp
+                  CidrIp: 0.0.0.0/0
+                  FromPort: "3000"
+                  ToPort: "3000"
+    
+    SecurityGroupIgress1:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            IpProtocol: tcp
+            FromPort: 80
+            ToPort: 80
+            GroupId: !Ref SecurityGroup02
+            SourceSecurityGroupId: !Ref SecurityGroup01
+
+    SecurityGroup03:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupName: Kurata-DB-wizard-02
+            GroupDescription: Kurata-DB-wizard-02_CloudFormation
+            VpcId: !ImportValue VPC-subnet-2-VPCID
+                  
+    SecurityGroupIgress2:
+        Type: AWS::EC2::SecurityGroupIngress
+        Properties:
+            IpProtocol: tcp
+            FromPort: 3306
+            ToPort: 3306
+            GroupId: !Ref SecurityGroup03
+            SourceSecurityGroupId: !Ref SecurityGroup02
+
+Outputs:
+    StackSecurity01:
+        Description: SecurityGroup01 ID
+        Value: !Ref SecurityGroup01
+        Export:
+            Name: !Sub "${AWS::StackName}-Security01"
+
+    StackSecurity02:
+        Description: SecurityGroup02 ID
+        Value: !Ref SecurityGroup02
+        Export:
+            Name: !Sub "${AWS::StackName}-Security02"
+
+    StackSecurity03:
+        Description: SecurityGroup03 ID
+        Value: !Ref SecurityGroup03
+        Export:
+            Name: !Sub "${AWS::StackName}-Security03"
