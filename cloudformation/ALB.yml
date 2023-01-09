@@ -27,9 +27,7 @@ Resources:
             TargetType: instance
             Targets:
                 - Id: !ImportValue EC2-01-EC2ID
-                  Port: 80
-                - Id: !ImportValue EC2-01-EC2ID-Target
-                  Port: 80
+                  Port: 80    
             HealthCheckEnabled: true
             HealthCheckIntervalSeconds: 30
             HealthCheckPath: /
