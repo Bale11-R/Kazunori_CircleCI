@@ -15,3 +15,7 @@ workflows:
   raisetech:
     jobs:
       - cfn-lint
+        filter:
+          branches:
+            only:
+              - cfn
