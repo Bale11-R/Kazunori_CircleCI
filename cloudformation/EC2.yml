@@ -9,6 +9,11 @@ Parameters:
 
 Resources:
     
+    ElasticIP:
+        Type: AWS::EC2::EIP
+        Properties:
+            Domain: vpc
+    
     KurataEC202:
         Type: AWS::EC2::Instance
         Properties:
@@ -35,31 +40,16 @@ Resources:
                       DeleteOnTermination: true
                       VolumeSize: 8
 
-    KurataEC203:
-        Type: AWS::EC2::Instance
+            UserData:
+                Fn::Base64: |
+                    #!/bin/bash
+                    sudo yum update -y
+
+    IPAssoc:
+        Type: AWS::EC2::EIPAssociation
         Properties:
-            ImageId: !Ref LinuxAMI
-            KeyName: Kurata_keypair
-            InstanceType: t2.micro
-            InstanceInitiatedShutdownBehavior: stop
-            Tenancy: default
-            NetworkInterfaces:
-                - AssociatePublicIpAddress: "true"
-                  DeviceIndex: "0"
-                  SubnetId: !ImportValue VPC-subnet-2-PublicSubnet1C
-                  GroupSet:
-                      - !ImportValue Security-02-Security02
-
-            Tags:
-                - Key: Name
-                  Value: Kurata_EC2-03_Target
-
-            BlockDeviceMappings:
-                - DeviceName: /dev/xvda
-                  Ebs:
-                      VolumeType: gp2
-                      DeleteOnTermination: true
-                      VolumeSize: 8
+            InstanceId: !Ref KurataEC202
+            EIP: !Ref ElasticIP
 
 Outputs:
     StackEC2:
@@ -67,8 +57,3 @@ Outputs:
         Value: !Ref KurataEC202
         Export:
             Name: !Sub "${AWS::StackName}-EC2ID"
-    StackEC2Target:
-        Description: EC2 ID_Target
-        Value: !Ref KurataEC203
-        Export:
-            Name: !Sub "${AWS::StackName}-EC2ID-Target"
