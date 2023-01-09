@@ -20,7 +20,7 @@ jobs:
             aws cloudformation deploy --template cloudformation/Security.yml --stack-name Security-02
             aws cloudformation deploy --template cloudformation/EC2.yml --stack-name EC2-01
             aws cloudformation deploy --template cloudformation/ALB.yml --stack-name ALB-02
-            aws ssm put-parameter --name rds-master-user-password --value 'annkw2009Tooth' --type SecureString
+            aws ssm put-parameter --name rds-master-user-password --value 'annkw2009Tooth' --type SecureString --overwrite
             aws cloudformation deploy --template cloudformation/RDS.yml --stack-name RDS-02
 workflows:
   raisetech-cfn-deploy:
