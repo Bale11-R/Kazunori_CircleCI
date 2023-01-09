@@ -5,18 +5,8 @@ Description:
 
 Parameters:
     DBMasterUserName:
-        Description: "RDS Master User Name"
+        Default: Kazunori_Kurata_demo
         Type: String
-        MinLength: 16
-        MaxLength: 128
-        AllowedPattern: "[a-zA-Z][a-zA-Z0-9]*"
-    DBMasterUserPassword:
-        NoEcho: true
-        Description: "RDS Master User Password"
-        Type: String
-        MinLength: 16
-        MaxLength: 128
-        AllowedPattern: "[a-zA-Z0-9]*"
     EngineVersion:
         Default: 8.0.28
         Type: String
@@ -31,6 +21,12 @@ Parameters:
         Type: String
 
 Resources:
+    
+    RDSDBCluster:
+        Type: 'AWS::RDS::DBCluster'
+        Properties:
+            MasterUserPassword: '{{resolve:ssm-secure:rds-master-user-password:1}}'
+    
     Kuratadatabase02:
         Properties:
             AllocatedStorage: !Ref 'StorageSize'
@@ -42,7 +38,6 @@ Resources:
             EngineVersion: !Ref 'EngineVersion'
             StorageType: !Ref 'StorageType'
             MasterUsername: !Ref 'DBMasterUserName'
-            MasterUserPassword: !Ref 'DBMasterUserPassword'
             PubliclyAccessible: 'false'
             VPCSecurityGroups:
             - !ImportValue Security-02-Security03
