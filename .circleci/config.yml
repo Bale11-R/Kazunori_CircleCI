@@ -1,20 +1,30 @@
 version: 2.1
+
 orbs:
-  python: circleci/python@2.0.3
+  aws-cli: circleci/aws-cli@3.1.4
+
 jobs:
-  cfn-lint:
-    executor: python/default
+  executeCloudFormation:
+    executor: aws-cli/default
     steps:
       - checkout
-      - run: pip install cfn-lint
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_DEFAULT_REGION
       - run:
-          name: run cfn-lint
+          name: deploy CloudFormation
           command: |
-            cfn-lint -i W3002 -t cloudformation/*.yml
+            set -x
+            aws cloudformation deploy --template cloudformation/VPC-subnet.yml --stack-name VPC-subnet-2
+            aws cloudformation deploy --template cloudformation/Security.yml --stack-name Security-02
+            aws cloudformation deploy --template cloudformation/EC2.yml --stack-name EC2-01
+            aws cloudformation deploy --template cloudformation/ALB.yml --stack-name ALB-02
+            aws cloudformation deploy --template cloudformation/RDS.yml --stack-name RDS-02
 workflows:
-  raisetech:
+  raisetech-cfn-deploy:
     jobs:
-      - cfn-lint:
+      - executeCloudFormation:
         filters:
           branches:
             only: cfn
