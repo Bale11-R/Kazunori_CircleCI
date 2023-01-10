@@ -7,6 +7,9 @@ Parameters:
     DBMasterUserName:
         Default: Kazunori_Kurata_demo
         Type: String
+    DBMasterUserPassword:
+        Default: annkw2009Tooth
+        Type: String
     EngineVersion:
         Default: 8.0.28
         Type: String
@@ -22,11 +25,6 @@ Parameters:
 
 Resources:
     
-    RDSDBCluster:
-        Type: 'AWS::RDS::DBCluster'
-        Properties:
-            MasterUserPassword: '{{resolve:ssm-secure:rds-master-user-password:1}}'
-    
     Kuratadatabase02:
         Properties:
             AllocatedStorage: !Ref 'StorageSize'
@@ -38,6 +36,7 @@ Resources:
             EngineVersion: !Ref 'EngineVersion'
             StorageType: !Ref 'StorageType'
             MasterUsername: !Ref 'DBMasterUserName'
+            MasterUserPassword: !Ref 'DBMasterUserPassword'
             PubliclyAccessible: 'false'
             VPCSecurityGroups:
             - !ImportValue Security-02-Security03
