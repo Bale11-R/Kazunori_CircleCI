@@ -32,7 +32,7 @@ jobs:
       - ansible-playbook/install:
           version: '2.10.7'
       - ansible-playbook/playbook:
-          playbook: amsible/playbook.yml
+          playbook: ansible/playbook.yml
           playbook-options: '-u ec2-user -i ansinle/hosts/inventory --private-key ~/.ssh/id_rsa'
 
 workflows:
@@ -43,8 +43,8 @@ workflows:
           branches:
             only: cfn
       - executeAnsible:
+          requires:
+            - executeCloudFormation
         filters:
           branches:
             only: ansible
-          requires:
-            - executeCloudFormation
