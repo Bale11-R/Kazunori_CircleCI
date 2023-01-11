@@ -34,6 +34,7 @@ jobs:
       - ansible-playbook/playbook:
           playbook: amsible/playbook.yml
           playbook-options: '-u ec2-user -i ansinle/hosts/inventory --private-key ~/.ssh/id_rsa'
+
 workflows:
   raisetech-lecture13:
     jobs:
@@ -42,8 +43,8 @@ workflows:
           branches:
             only: cfn
       - executeAnsible:
-          requires:
-            - executeCloudFormation
         filters:
           branches:
             only: ansible
+          requires:
+            - executeCloudFormation
