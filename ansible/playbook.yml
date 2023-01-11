@@ -1,0 +1,5 @@
+- hosts: TargetNode
+  become: yes
+  roles:
+    - { role: git, tags: git }
+
