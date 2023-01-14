@@ -1,2 +1,6 @@
 [TargetNode]
 35.72.41.45
+
+rbenv_path: ~/.rbenv
+ruby_version: 3.1.2
+ruby_dir: "{{ rbenv_path }}/versions/{{ ruby_version }}"

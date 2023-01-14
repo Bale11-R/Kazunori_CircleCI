@@ -1,0 +1,25 @@
+---
+- name: remove the MariaDB
+  become: yes
+  yum:
+    name: mariadb-server
+    state: absent
+
+- name: install the mysql rpm from a remote repo
+  become: yes
+  yum:
+    name: 'https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm'
+    state: present
+
+- name: Import a key from a url
+  become: yes
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+
+- name: install mysql-community-client.x86_64
+  become: yes
+  yum:
+    name: mysql-community-client.x86_64
+    state: present
+
