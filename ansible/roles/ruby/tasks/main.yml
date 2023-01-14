@@ -1,6 +1,6 @@
 ---
 - name: check rbenv install
-    command: "{{ rbenv_path }}"/bin/rbenv --version
+    cmd: "{{ rbenv_path }}"/bin/rbenv --version
     register: rbenv_exists
     changed_when: False
     ignore_errors: True
