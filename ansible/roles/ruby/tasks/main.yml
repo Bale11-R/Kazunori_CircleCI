@@ -1,9 +1,10 @@
 ---
 - name: check rbenv install
-    cmd: "{{ rbenv_path }}"/bin/rbenv --version
-    register: rbenv_exists
-    changed_when: False
-    ignore_errors: True
+  command:
+    cmd: '"{{ rbenv_path }}"/bin/rbenv --version'
+  register: rbenv_exists
+  changed_when: False
+  ignore_errors: True
 
 - name: download rbenv_ruby-build
   shell: |
