@@ -1,0 +1,37 @@
+---
+- name: check rbenv install
+    command: "{{ rbenv_path }}/bin/rbenv --version"
+    register: rbenv_exists
+    changed_when: False
+    ignore_errors: True
+
+- name: download rbenv_ruby-build
+  shell: |
+    curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+  when: not rbenv_exists.stat.exists
+
+- name: Add rbenv to PATH
+  lineinfile: 
+    path: "~/.bash_profile"
+    line: "export PATH=$HOME/.rbenv/bin:$PATH"
+
+- name: Eval rbenv init in ~/.bash_profile
+  lineinfile: 
+    path: "~/.bash_profile"
+    line: 'eval "$(rbenv init -)"'
+
+- name: Load rbenv setting
+  shell: bash -lc "source ~/.bash_profile"
+
+- name: Check ruby installed
+  shell: bash -lc "rbenv versions | grep {{ ruby_version }}"
+  register: rbenv_check_install
+  changed_when: False
+  ignore_errors: True
+
+- name: Install Ruby
+  shell: bash -lc "rbenv install {{ ruby_version }}"
+  when: rbenv_check_install.rc == 1
+
+- name: Set default Ruby version
+  shell: bash -lc "rbenv global {{ ruby_version }} && rbenv rehash"
