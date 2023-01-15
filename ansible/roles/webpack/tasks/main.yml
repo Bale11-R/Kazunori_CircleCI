@@ -11,10 +11,8 @@
 
 - name: install latest nodejs temporary
   yum:
-    name: "{{ item }}"
+    name: nodejs
     state: present
-  with_items: 
-    - nodejs
   when: not nodejs_bin.stat.exists
 
 - name: download and setup yarn source
