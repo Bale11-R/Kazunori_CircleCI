@@ -6,7 +6,7 @@
 
 - name: download and setup nodejs source
   shell: |
-    curl -fsSL https://rpm.nodesource.com/setup_lts.x | bash -
+    curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -
   when: not nodejs_bin.stat.exists
 
 - name: install latest nodejs temporary
