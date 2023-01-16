@@ -21,14 +21,14 @@
 
 - name: install latest package temporary
   yum:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
-  with_items:
-    - gcc
-    - clang
-    - openssl-devel
-    - zlib-devel
-    - mysql-devel
-    - yarn
-    - readline-devel
-    
+  vars:
+    packages:
+      - gcc
+      - clang
+      - openssl-devel
+      - zlib-devel
+      - mysql-devel
+      - yarn
+      - readline-devel
