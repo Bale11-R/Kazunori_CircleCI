@@ -6,7 +6,7 @@
 
 - name: Fetch nodejs
   ansible.builtin.uri: 
-    url: https://rpm.nodesource.com/setup_lts.x
+    url: https://rpm.nodesource.com/setup_18.x
     return_content: yes
   register: nodejs_installer
   when: not nodejs_bin.stat.exists
@@ -14,7 +14,7 @@
 - name: Run nodejs_installer
   become: yes
   ansible.builtin.shell:
-    cmd: -E bash -
+    cmd: bash -
     stdin: "{{ nodejs_installer.content }}"
   when: not nodejs_bin.stat.exists
 
