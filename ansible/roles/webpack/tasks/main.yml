@@ -12,8 +12,9 @@
   when: not nodejs_bin.stat.exists
 
 - name: Run nodejs_installer
+  become: yes
   ansible.builtin.shell:
-    cmd: sudo bash -
+    cmd: -E bash -
     stdin: "{{ nodejs_installer.content }}"
   when: not nodejs_bin.stat.exists
 
