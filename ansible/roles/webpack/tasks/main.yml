@@ -4,12 +4,20 @@
     path: /usr/bin/node
   register: nodejs_bin
 
-- name: download and setup nodejs source
-  shell: |
-    curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -
+- name: Fetch nodejs
+  ansible.builtin.uri: 
+    uri: https://rpm.nodesource.com/setup_lts.x
+    return_content: yes
+  register: nodejs_installer
   when: not nodejs_bin.stat.exists
 
-- name: install latest nodejs temporary
+- name: Run nodejs_installer
+  ansible.builtin.shell:
+    cmd: sudo bash -
+    stdin: "{{ nodejs_installer.content }}"
+  when: not nodejs_bin.stat.exists
+
+- name: install present nodejs
   become: yes
   yum:
     name: nodejs
@@ -17,9 +25,16 @@
     update_cache: yes
   when: not nodejs_bin.stat.exists
 
-- name: download and setup yarn source
-  shell: |
-    curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
+- name: Fetch yarn
+  ansible.builtin.uri: 
+    uri: https://dl.yarnpkg.com/rpm/yarn.repo
+    return_content: yes
+  register: yarn_installer
+
+- name: Run yarn_installer
+  ansible.builtin.shell:
+    cmd: tee /etc/yum.repos.d/yarn.repo
+    stdin: "{{ yarn_installer.content }}"
 
 - name: install latest yarn temporary
   become: yes
