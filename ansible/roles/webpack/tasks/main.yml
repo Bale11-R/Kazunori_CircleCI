@@ -23,7 +23,7 @@
   yum:
     name: nodejs
     state: present
-    update_cache: yes
+    skip_broken: yes
   when: not nodejs_bin.stat.exists
 
 - name: Fetch yarn
