@@ -22,9 +22,18 @@
     stdin: "{{ nodejs_installer.content }}"
   when: not nodejs_bin.stat.exists
 
+- name: install present_package
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: 
+    - gcc-c++
+    - make
+
 - name: install present nodejs
   become: yes
-  ansible.builtin.yum:
+  yum:
     name: nodejs
     state: present
   when: not nodejs_bin.stat.exists
