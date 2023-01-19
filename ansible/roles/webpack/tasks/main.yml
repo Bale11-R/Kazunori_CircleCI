@@ -5,7 +5,8 @@
   register: nodejs_bin
 
 - name: cache clean
-  cmd: yum clean all
+  ansible.builtin.command:
+    cmd: yum clean all
   args:
     warn: no
 
