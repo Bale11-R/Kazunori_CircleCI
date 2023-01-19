@@ -4,10 +4,10 @@
     path: /usr/bin/node
   register: nodejs_bin
 
-- name: Deleate nodejsrepo
+- name: Deleate nodejs_cache
   become: yes
   file:
-    path: "/etc/yum.repos.d/nodesource-el7.repo"
+    path: "/var/cache/yum/*"
     state: absent
 
 - name: Fetch nodejs
