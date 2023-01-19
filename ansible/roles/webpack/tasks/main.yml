@@ -4,6 +4,12 @@
     path: /usr/bin/node
   register: nodejs_bin
 
+- name: Deleate nodejsrepo
+  become: yes
+  file:
+    path: "/etc/yum.repos.d/nodesource-el7.repo"
+    state: absent
+
 - name: Fetch nodejs
   ansible.builtin.uri: 
     url: https://rpm.nodesource.com/setup_16.x
