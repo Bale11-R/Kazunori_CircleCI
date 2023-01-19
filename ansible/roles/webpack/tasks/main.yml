@@ -4,10 +4,8 @@
     path: /usr/bin/node
   register: nodejs_bin
 
-- name: Deleate nodejs_cache
-  become: yes
-  file:
-    path: "/var/cache/yum/*"
+- file:
+    path: /var/cache/yum/*
     state: absent
 
 - name: Fetch nodejs
