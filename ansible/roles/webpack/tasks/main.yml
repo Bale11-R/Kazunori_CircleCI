@@ -8,6 +8,10 @@
     path: /var/cache/yum/*
     state: absent
 
+- file:
+    path: /etc/yum.repos.d/nodesource-el7.repo
+    state: absent
+
 - name: Fetch nodejs
   ansible.builtin.uri: 
     url: https://rpm.nodesource.com/setup_16.x
@@ -21,12 +25,6 @@
     cmd: bash -
     stdin: "{{ nodejs_installer.content }}"
   when: not nodejs_bin.stat.exists
-
-- name: install present_package
-  become: yes
-  yum:
-    name: ['gcc-c++', 'make']
-    state: present
 
 - name: install present nodejs
   become: yes
