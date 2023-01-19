@@ -6,7 +6,7 @@
 
 - name: Fetch nodejs
   ansible.builtin.uri: 
-    url: https://rpm.nodesource.com/setup_18.x
+    url: https://rpm.nodesource.com/setup_16.x
     return_content: yes
   register: nodejs_installer
   when: not nodejs_bin.stat.exists
@@ -20,10 +20,9 @@
 
 - name: install present nodejs
   become: yes
-  yum:
+  ansible.builtin.yum:
     name: nodejs
     state: present
-    skip_broken: yes
   when: not nodejs_bin.stat.exists
 
 - name: Fetch yarn
@@ -37,13 +36,13 @@
     cmd: tee /etc/yum.repos.d/yarn.repo
     stdin: "{{ yarn_installer.content }}"
 
-- name: install latest yarn temporary
+- name: install present yarn temporary
   become: yes
   yum:
     name: yarn
     state: present
 
-- name: install latest package temporary
+- name: install present package temporary
   become: yes
   yum:
     name: "{{ packages }}"
