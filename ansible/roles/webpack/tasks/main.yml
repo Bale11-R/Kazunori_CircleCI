@@ -9,14 +9,17 @@
     cmd: yum clean all
   args:
     warn: no
+  when: not nodejs_bin.stat.exists
 
 - file:
     path: /var/cache/yum/
     state: absent
+  when: not nodejs_bin.stat.exists
 
 - file:
     path: /etc/yum.repos.d/nodesource-el7.repo
     state: absent
+  when: not nodejs_bin.stat.exists
 
 - name: Fetch nodejs
   ansible.builtin.uri: 
