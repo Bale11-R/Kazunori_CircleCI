@@ -32,7 +32,7 @@
 
 - name: Check ruby installed
   stat: 
-    path: "{{ rbenv_path }}"/shims/ruby
+    path: "{{ rbenv_path }}/shims/ruby"
   register: rbenv_check_install
 
 - name: Install Ruby
