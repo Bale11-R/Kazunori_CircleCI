@@ -6,7 +6,7 @@
 
 - name: download rbenv_ruby-build
   ansible.builtin.uri:
-    uri: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
+    url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
     return_content: yes
   when: not rbenv_exists.stat.exists
 
