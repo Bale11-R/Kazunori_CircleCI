@@ -34,8 +34,6 @@
   stat: 
     path: "{{ rbenv_path }}"/shims/ruby
   register: rbenv_check_install
-  changed_when: False
-  ignore_errors: True
 
 - name: Install Ruby
   shell: bash -lc rbenv install "{{ ruby_version }}"
