@@ -1,14 +1,13 @@
 ---
 - name: check rbenv install
-  command:
-    cmd: '"{{ rbenv_path }}"/bin/rbenv --version'
+  stat:
+    path: "{{ rbenv_path }}"
   register: rbenv_exists
-  changed_when: False
-  ignore_errors: True
 
 - name: download rbenv_ruby-build
-  shell: |
-    curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+  ansible.builtin.uri:
+    uri: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
+    return_content: yes
   when: not rbenv_exists.stat.exists
 
 - name: Add rbenv to PATH
