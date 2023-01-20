@@ -30,7 +30,6 @@
 
 - name: Install Ruby
   shell: bash -lc "rbenv install {{ ruby_version }}"
-  when: rbenv_check_install.rc == 1
 
 - name: Set default Ruby version
   shell: bash -lc "rbenv global {{ ruby_version }} && rbenv rehash"
