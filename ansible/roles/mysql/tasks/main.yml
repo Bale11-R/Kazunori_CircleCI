@@ -8,7 +8,7 @@
 - name: install the mysql rpm from a remote repo
   become: yes
   yum:
-    name: 'https://dev.mysql.com/get/mysql80-community-release-el8-4.noarch.rpm'
+    name: https://dev.mysql.com/get/mysql80-community-release-el7-7.noarch.rpm
     state: present
 
 - name: Import a key from a url
