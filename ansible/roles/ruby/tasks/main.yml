@@ -12,19 +12,27 @@
 
 - name: Add rbenv to PATH
   lineinfile: 
-    path: "~/.bash_profile"
-    line: "export PATH=$HOME/.rbenv/bin:$PATH"
+    path: ~/.bash_profile
+    line: export PATH="$HOME/.rbenv/bin:$PATH"
+
+- name: rbenv init
+  ansible.builtin.command:
+    cmd: ~/.rbenv/bin/rbenv init
+  args:
+    warn: no
+  when: not rbenv_exists.stat.exists
 
 - name: Eval rbenv init in ~/.bash_profile
   lineinfile: 
-    path: "~/.bash_profile"
-    line: 'eval "$(rbenv init -)"'
+    path: ~/.bash_profile
+    line: eval "$(rbenv init -)"
 
 - name: Load rbenv setting
-  shell: bash -lc "source ~/.bash_profile"
+  shell: bash -lc source ~/.bash_profile
 
 - name: Check ruby installed
-  shell: bash -lc rbenv versions | grep "{{ ruby_version }}"
+  stat: 
+    path: "{{ rbenv_path }}"/shims/ruby
   register: rbenv_check_install
   changed_when: False
   ignore_errors: True
