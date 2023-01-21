@@ -20,11 +20,10 @@
   when: not rbenv_exists.stat.exists
 
 - name: Replace profile txt
-  ansible.builtin.lineinfile:
-    path: /home/ec2-user/.bash_profile
-    state: present
-    search_string: 'PATH=$PATH:$HOME/.local/bin:$HOME/bin'
-    line: 'PATH=$PATH:$HOME/.local/bin:$HOME/bin:/root/.rbenv/bin:/root/.rbenv/shims'
+  replace:
+    dest: /home/ec2-user/.bash_profile
+    regexp: 'PATH=$PATH:$HOME/.local/bin:$HOME/bin'
+    replace: 'PATH=$PATH:$HOME/.local/bin:$HOME/bin:/root/.rbenv/bin:/root/.rbenv/shims'
 
 - name: Add rbenv to PATH
   lineinfile: 
