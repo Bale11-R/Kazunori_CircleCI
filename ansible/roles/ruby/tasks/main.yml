@@ -32,6 +32,10 @@
   ansible.builtin.shell: 
     cmd: source /home/ec2-user/.bash_profile
 
+- name: Set default Ruby version h1
+  ansible.builtin.shell:
+    cmd: rbenv rehash
+
 - name: Check ruby installed
   stat: 
     path: "{{ rbenv_path }}/shims/ruby"
@@ -45,6 +49,6 @@
   ansible.builtin.shell: 
     cmd: rbenv global "{{ ruby_version }}"
 
-- name: Set default Ruby version h
+- name: Set default Ruby version h2
   ansible.builtin.shell:
     cmd: rbenv rehash
