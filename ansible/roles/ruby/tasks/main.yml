@@ -19,6 +19,12 @@
     chdir: /home/ec2-user/
   when: not rbenv_exists.stat.exists
 
+- name: Replace profile txt
+  ansible.builtin.replace:
+    path: /home/ec2-user/.bash_profile
+    regexp: 'PATH=$PATH:$HOME/.local/bin:$HOME/bin'
+    replace: 'PATH=$PATH:$HOME/.local/bin:$HOME/bin:/root/.rbenv/bin:/root/.rbenv/shims'
+
 - name: Add rbenv to PATH
   lineinfile: 
     path: /home/ec2-user/.bash_profile
