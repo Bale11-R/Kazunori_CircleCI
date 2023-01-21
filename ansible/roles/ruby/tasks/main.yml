@@ -22,6 +22,11 @@
     path: /home/ec2-user/.bash_profile
     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
 
+- name: Add export PATH
+  lineinfile:
+    path: /home/ec2-user/.bash_profile
+    line: 'export PATH'
+
 - name: rbenv init
   ansible.builtin.shell:
     cmd: /home/ec2-user/.rbenv/bin/rbenv init
