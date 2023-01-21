@@ -1,10 +1,10 @@
 ---
-- name: check rbenv install
+- name: Check rbenv install
   stat:
     path: "{{ rbenv_path }}"
   register: rbenv_exists
 
-- name: download rbenv_ruby-build
+- name: Download rbenv_ruby-build
   become: yes
   uri:
     url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
