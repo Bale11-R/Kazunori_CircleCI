@@ -26,10 +26,11 @@
 - name: Eval rbenv init in ~/.bash_profile
   lineinfile: 
     path: /home/ec2-user/.bash_profile
-    line: 'eval "$(rbenv init - bash)"'
+    line: 'eval "$(rbenv init -)"'
 
 - name: Load rbenv setting
-  shell: bash -lc "source /home/ec2-user/.bash_profile"
+  ansible.builtin.shell: 
+    cmd: source /home/ec2-user/.bash_profile
 
 - name: Check ruby installed
   stat: 
@@ -37,7 +38,13 @@
   register: rbenv_check_install
 
 - name: Install Ruby
-  shell: bash -lc "rbenv install {{ ruby_version }}"
+  ansible.builtin.shell:
+    cmd: rbenv install "{{ ruby_version }}"
 
-- name: Set default Ruby version
-  shell: bash -lc "rbenv global {{ ruby_version }} && rbenv rehash"
+- name: Set default Ruby version g
+  ansible.builtin.shell: 
+    cmd: rbenv global "{{ ruby_version }}"
+
+- name: Set default Ruby version h
+  ansible.builtin.shell:
+    cmd: rbenv rehash
