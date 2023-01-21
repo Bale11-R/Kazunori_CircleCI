@@ -39,13 +39,10 @@
   register: rbenv_check_install
 
 - name: Install Ruby
-  ansible.builtin.shell:
-    cmd: rbenv install "{{ ruby_version }}"
+  shell: bash -lc "rbenv install {{ ruby_version }}"
 
 - name: Set default Ruby version g
-  ansible.builtin.shell: 
-    cmd: rbenv global "{{ ruby_version }}"
+  shell: bash -lc "rbenv global {{ ruby_version }}"
 
 - name: Set default Ruby version h
-  ansible.builtin.shell:
-    cmd: rbenv rehash
+  shell: bash -lc "rbenv rehash"
