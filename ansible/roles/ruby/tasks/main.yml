@@ -30,7 +30,7 @@
 - name: Eval rbenv init in ~/.bash_profile
   lineinfile: 
     path: /home/ec2-user/.bash_profile
-    line: 'eval "$(rbenv init -)"'
+    line: 'eval "$(rbenv init - bash)"'
 
 - name: Load rbenv setting
   ansible.builtin.shell: 
