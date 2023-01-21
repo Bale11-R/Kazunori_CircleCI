@@ -23,6 +23,10 @@
     path: /home/ec2-user/.bash_profile
     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
 
+- name: rbenv init
+  ansible.builtin.shell:
+    cmd: /home/ec2-user/.rbenv/bin/rbenv init
+
 - name: Eval rbenv init in ~/.bash_profile
   lineinfile: 
     path: /home/ec2-user/.bash_profile
@@ -31,10 +35,6 @@
 - name: Load rbenv setting
   ansible.builtin.shell: 
     cmd: source /home/ec2-user/.bash_profile
-
-- name: Set default Ruby version h1
-  ansible.builtin.shell:
-    cmd: rbenv rehash
 
 - name: Check ruby installed
   stat: 
@@ -49,6 +49,6 @@
   ansible.builtin.shell: 
     cmd: rbenv global "{{ ruby_version }}"
 
-- name: Set default Ruby version h2
+- name: Set default Ruby version h
   ansible.builtin.shell:
     cmd: rbenv rehash
