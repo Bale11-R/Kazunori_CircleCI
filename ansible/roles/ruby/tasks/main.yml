@@ -30,8 +30,7 @@
     line: 'eval "$(rbenv init -)"'
 
 - name: Load rbenv setting
-  ansible.builtin.shell: 
-    cmd: source /home/ec2-user/.bash_profile
+  shell: bash -lc "source /home/ec2-user/.bash_profile"
 
 - name: Check ruby installed
   stat: 
