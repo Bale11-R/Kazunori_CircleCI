@@ -39,6 +39,10 @@ workflows:
   raisetech-lecture13:
     jobs:
       - executeCloudFormation:
+          filters:
+            branches:
+              only: ansible
       - executeAnsible:
-          requires:
-            - executeCloudFormation
+          filters:
+            branches:
+              only: ansible
