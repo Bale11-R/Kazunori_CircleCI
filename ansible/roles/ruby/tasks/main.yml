@@ -21,17 +21,17 @@
 
 - name: Add rbenv to PATH
   lineinfile: 
-    path: ~/.bash_profile
+    path: /home/ec2-user/.bash_profile
     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
 
 - name: rbenv init in ~/.bash_profile
   lineinfile: 
-    path: ~/.bash_profile
+    path: /home/ec2-user/.bash_profile
     line: 'eval "$(rbenv init -)"'
 
 - name: Load rbenv setting
   ansible.builtin.shell: 
-    cmd: source ~/.bash_profile
+    cmd: source /home/ec2-user/.bash_profile
 
 - name: Check ruby installed
   stat: 
