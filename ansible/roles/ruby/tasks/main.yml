@@ -24,7 +24,7 @@
     path: /home/ec2-user/.bash_profile
     line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
 
-- name: rbenv init in ~/.bash_profile
+- name: rbenv init
   lineinfile: 
     path: /home/ec2-user/.bash_profile
     line: 'eval "$(rbenv init -)"'
