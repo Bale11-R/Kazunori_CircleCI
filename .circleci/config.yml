@@ -41,7 +41,7 @@ workflows:
       - executeCloudFormation:
           filters:
             branches:
-              only: ansible
+              only: cfn
       - executeAnsible:
           filters:
             branches:
