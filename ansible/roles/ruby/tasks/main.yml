@@ -19,13 +19,6 @@
     chdir: /home/ec2-user/
   when: not rbenv_exists.stat.exists
 
-- name: Replace profile txt
-  lineinfile:
-    path: /home/ec2-user/.bash_profile
-    regexp: "PATH=$PATH:$HOME/.local/bin:$HOME/bin"
-    line: "PATH=$PATH:$HOME/.local/bin:$HOME/bin:/root/.rbenv/bin:/root/.rbenv/shims"
-    state: present
-
 - name: Add rbenv to PATH
   lineinfile: 
     path: /home/ec2-user/.bash_profile
