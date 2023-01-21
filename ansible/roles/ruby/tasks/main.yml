@@ -6,7 +6,7 @@
 
 - name: download rbenv_ruby-build
   become: yes
-  ansible.builtin.uri:
+  uri:
     url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
     return_content: yes
   register: rbenv_installer
@@ -14,7 +14,7 @@
 
 - name: Run rbenv_ruby-build
   become: yes
-  ansible.builtin.shell: "{{ rbenv_installer.content }}"
+  shell: "{{ rbenv_installer.content }}"
   when: not rbenv_exists.stat.exists
 
 - name: Add rbenv to PATH
@@ -25,7 +25,7 @@
 - name: Eval rbenv init in ~/.bash_profile
   lineinfile: 
     path: /home/ec2-user/.bash_profile
-    line: 'eval "$(rbenv init - bash)"'
+    line: 'eval "$(rbenv init -)"'
 
 - name: Load rbenv setting
   ansible.builtin.shell: 
