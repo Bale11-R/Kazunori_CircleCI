@@ -8,17 +8,13 @@
   become: yes
   ansible.builtin.uri:
     url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
-    dest: /home/ec2-user/
     return_content: yes
   register: rbenv_installer
   when: not rbenv_exists.stat.exists
 
 - name: Run rbenv_ruby-build
   become: yes
-  ansible.builtin.shell:
-    cmd: bash
-    chdir: /home/ec2-user/
-    stdin: "{{ rbenv_installer.content }}"
+  ansible.builtin.shell: "{{ rbenv_installer.content }}"
   when: not rbenv_exists.stat.exists
 
 - name: Add rbenv to PATH
