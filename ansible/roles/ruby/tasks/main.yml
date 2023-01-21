@@ -31,7 +31,7 @@
 
 - name: Load rbenv setting
   ansible.builtin.shell: 
-    cmd: source .bash_profile
+    cmd: source ~/.bash_profile
 
 - name: Check ruby installed
   stat: 
