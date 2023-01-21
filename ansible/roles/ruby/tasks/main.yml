@@ -15,6 +15,7 @@
 - name: Run rbenv_ruby-build
   become: yes
   shell: "{{ rbenv_installer.content }}"
+  args:  
     chdir: /home/ec2-user/
   when: not rbenv_exists.stat.exists
 
