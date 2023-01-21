@@ -8,6 +8,7 @@
   become: yes
   ansible.builtin.uri:
     url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
+    dest: /home/ec2-user/
     return_content: yes
   register: rbenv_installer
   when: not rbenv_exists.stat.exists
