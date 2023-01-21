@@ -16,6 +16,7 @@
   become: yes
   ansible.builtin.shell:
     cmd: bash
+    chdir: /home/ec2-user/
     stdin: "{{ rbenv_installer.content }}"
   when: not rbenv_exists.stat.exists
 
