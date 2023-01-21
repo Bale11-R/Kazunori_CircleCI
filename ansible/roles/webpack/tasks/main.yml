@@ -42,22 +42,30 @@
     state: present
   when: not nodejs_bin.stat.exists
 
+- name: check if yarn already installed
+  stat:
+    path: /usr/bin/yarn
+  register: yarn_bin
+
 - name: Fetch yarn
   ansible.builtin.uri: 
     url: https://dl.yarnpkg.com/rpm/yarn.repo
     return_content: yes
   register: yarn_installer
+  when: not yarn_bin.stat.exists
 
 - name: Run yarn_installer
   ansible.builtin.shell:
     cmd: tee /etc/yum.repos.d/yarn.repo
     stdin: "{{ yarn_installer.content }}"
+  when: not yarn_bin.stat.exists
 
 - name: install present yarn temporary
   become: yes
   yum:
     name: yarn
     state: present
+  when: not yarn_bin.stat.exists
 
 - name: install present package temporary
   become: yes
