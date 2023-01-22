@@ -20,12 +20,12 @@
 - name: Add rbenv to PATH
   lineinfile: 
     path: /home/ec2-user/.bash_profile
-    line: 'export PATH="/home/ec2-user/.rbenv/bin:$PATH"'
+    line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
 
 - name: rbenv init
   lineinfile: 
     path: /home/ec2-user/.bash_profile
-    line: 'eval "$(rbenv init -)"'
+    line: 'eval "$(rbenv init - bash)"'
 
 - name: Load rbenv setting
   shell: bash -lc "source /home/ec2-user/.bash_profile"
