@@ -50,3 +50,7 @@
 - name: Set default Ruby version h
   become_user: ec2-user
   shell: bash -lc "rbenv rehash"
+
+- name: Load ruby setting
+  become_user: ec2-user
+  shell: bash -lc "source ~/.bash_profile"
