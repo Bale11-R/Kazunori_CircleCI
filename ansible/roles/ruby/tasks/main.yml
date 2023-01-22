@@ -41,6 +41,7 @@
 - name: Install Ruby
   become_user: ec2-user
   shell: bash -lc "rbenv install {{ ruby_version }}"
+  when: not rbenv_check_install.stat.exists
 
 - name: Set default Ruby version g
   become_user: ec2-user
