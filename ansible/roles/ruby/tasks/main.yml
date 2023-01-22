@@ -5,6 +5,7 @@
   register: rbenv_exists
 
 - name: Download rbenv_ruby-build
+  become_user: ec2-user
   uri:
     url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
     return_content: yes
@@ -12,8 +13,9 @@
   when: not rbenv_exists.stat.exists
 
 - name: Run rbenv_ruby-build
+  become_user: ec2-user
   shell: "{{ rbenv_installer.content }}"
-  args:  
+  args:
     chdir: /home/ec2-user/
   when: not rbenv_exists.stat.exists
 
@@ -28,7 +30,7 @@
     line: 'eval "$(rbenv init - bash)"'
 
 - name: Load rbenv setting
-  shell: /bin/bash -l "source /home/ec2-user/.bash_profile"
+  shell: bash -lc "source /home/ec2-user/.bash_profile"
 
 - name: Check ruby installed
   stat: 
@@ -36,10 +38,10 @@
   register: rbenv_check_install
 
 - name: Install Ruby
-  shell: /bin/bash -l "rbenv install {{ ruby_version }}"
+  shell: bash -lc "rbenv install {{ ruby_version }}"
 
 - name: Set default Ruby version g
-  shell: /bin/bash -l "rbenv global {{ ruby_version }}"
+  shell: bash -lc "rbenv global {{ ruby_version }}"
 
 - name: Set default Ruby version h
-  shell: /bin/bash -l "rbenv rehash"
+  shell: bash -lc "rbenv rehash"
