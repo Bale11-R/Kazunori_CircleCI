@@ -28,7 +28,7 @@
     line: 'eval "$(rbenv init - bash)"'
 
 - name: Load rbenv setting
-  shell: bash -lc "source /home/ec2-user/.bash_profile"
+  shell: /bin/bash -l "source /home/ec2-user/.bash_profile"
 
 - name: Check ruby installed
   stat: 
@@ -36,10 +36,10 @@
   register: rbenv_check_install
 
 - name: Install Ruby
-  shell: bash -lc "rbenv install {{ ruby_version }}"
+  shell: /bin/bash -l "rbenv install {{ ruby_version }}"
 
 - name: Set default Ruby version g
-  shell: bash -lc "rbenv global {{ ruby_version }}"
+  shell: /bin/bash -l "rbenv global {{ ruby_version }}"
 
 - name: Set default Ruby version h
-  shell: bash -lc "rbenv rehash"
+  shell: /bin/bash -l "rbenv rehash"
