@@ -6,4 +6,5 @@
     - { role: webpack, tags: webpack }
     - { role: mysql, tags: mysql }
     - { role: ruby, tags: ruby }
-
+    - { role: clone, tags: clone }
+    
