@@ -2,7 +2,7 @@
 - name: Change directory and bundle install
   gem:
     name: bundler
-    version: "{ bundler_version }"
+    version: "{{ bundler_version }}"
     executable: /home/ec2-user/.rbenv/shims/gem
 
 - name: Change directory and install bundler
