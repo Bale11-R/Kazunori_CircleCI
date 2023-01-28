@@ -3,7 +3,7 @@
   gem:
     name: bundler
     version: "{ bundler_version }"
-    executable: /home/ec2-user/raisetech-live8-sample-app/.rbenv/shims/gem
+    executable: /home/ec2-user/.rbenv/shims/gem
 
 - name: Change directory and install bundler
   ansible.builtin.command:
