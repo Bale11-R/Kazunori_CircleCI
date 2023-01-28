@@ -1,9 +1,9 @@
 ---
 - name: Change directory and bundle install
-  become_user: ec2-user
   gem:
     name: bundler
     version: "{ bundler_version }"
+    executable: /home/ec2-user/raisetech-live8-sample-app/.rbenv/shims/gem
 
 - name: Change directory and install bundler
   ansible.builtin.command:
