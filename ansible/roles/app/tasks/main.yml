@@ -1,7 +1,7 @@
 ---
 - name: Change directory and bundle install
   shell: bash -lc 'gem install bundler:{ bundler_version }'
-  chdir: /home/ec2-user/raisetech-live8-sample-app/
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Change directory and install bundler
   ansible.builtin.command:
