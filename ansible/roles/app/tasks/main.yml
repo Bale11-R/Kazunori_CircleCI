@@ -5,6 +5,15 @@
     version: "{{ bundler_version }}"
     executable: /home/ec2-user/.rbenv/shims/gem
 
+- name: Rehash rbenv
+  become_user: ec2-user
+  shell: bash -lc "rbenv rehash"
+
+- name: Change directory and bundle install
+  ansible.builtin.command:
+    cmd: bash -lc "bundle install"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
 - name: Check if master.key exists
   stat:
     path: /home/ec2-user/raisetech-live8-sample-app/config/master.key
@@ -22,11 +31,6 @@
       cmd: bash -lc "EDITOR=vim bundle exec rails credentials:edit"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
   when: not masterkey_stat.stat.exists
-
-- name: Change directory and bundle install
-  ansible.builtin.command:
-    cmd: bash -lc "bundle install"
-    chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Install .env
   gem:
