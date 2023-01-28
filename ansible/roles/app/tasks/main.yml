@@ -6,8 +6,8 @@
     executable: /home/ec2-user/.rbenv/shims/gem
 
 - name: Change directory and bundle install
-  ansible.builtin.command:
-    cmd: bash -lc "bundle install"
+  shell: bash -lc "bundle install"
+  args:
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Check if master.key exists
