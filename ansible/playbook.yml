@@ -8,4 +8,5 @@
     - { role: ruby, tags: ruby }
     - { role: clone, tags: clone }
     - { role: nginx, tags: nginx }
+    - { role: app, tags: app }
 

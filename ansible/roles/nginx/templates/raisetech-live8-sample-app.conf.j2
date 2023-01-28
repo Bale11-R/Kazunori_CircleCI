@@ -1,5 +1,5 @@
-error_log  /ec2-user/raisetech-live8-sample-app/log/nginx.error.log;
-access_log /ec2-user/raisetech-live8-sample-app/log/nginx.access.log;
+error_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.error.log;
+access_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.access.log;
 
 upstream unicorn_server {
     server unix:/home/ec2-user/raisetech-live8-sample-app/tmp/sockets/unicorn.sock;

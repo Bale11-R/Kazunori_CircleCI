@@ -1,0 +1,98 @@
+---
+- name: Change directory and bundle install
+  ansible.builtin.shell:
+    cmd: 'gem install bundler:{ bundler_version }'
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Change directory and install bundler
+  ansible.builtin.command:
+    cmd: bundle install
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Check if master.key exists
+  stat:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/master.key
+  register: masterkey_stat
+
+- name: Set master.key
+  block: 
+  - name: Deleate credentials
+    file:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/credentials.yml.enc
+      state: absent
+  - name: Make master.key
+    become: yes
+    ansible.builtin.command:
+      cmd: EDITOR=vim bundle exec rails credentials:edit
+      chdir: /home/ec2-user/raisetech-live8-sample-app/
+  when: not masterkey_stat.stat.exists
+
+- name: Install .env
+  ansible.builtin.command:
+    cmd: gem install 'dotenv'
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Get the content of .env
+  ansible.builtin.shell:
+    shell: "cat /home/ec2-user/raisetech-live8-sample-app/.env | grep DATABASE"
+  register: database_stat
+  failed_when: database_stat.rc > 1
+
+- name: Set RDS enviroument
+  lineinfile:
+    path: /home/ec2-user/raisetech-live8-sample-app/.env
+    insertafter: EOF
+    line: "{{ item }}"
+  with_items:
+      - "{{ DATABASE_USERNAME }}"
+      - "{{ DATABASE_PASSWORD }}"
+      - "{{ DATABASE_HOSTNAME }}"
+  when: database_stat.rc == 1
+
+- name: Rename database.yml environment_vars
+  lineinfile:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
+    state: present
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+  - regexp: 'Rails.application.credentials.dig(:db, :username)'
+    line: "ENV['DATABASE_USER']"
+  - regexp: 'Rails.application.credentials.dig(:db, :password)'
+    line: "ENV['DATABASE_PASSWORD']"
+  - regexp: 'Rails.application.credentials.dig(:db, :host)'
+    line: "ENV['DATABASE_HOST']"
+
+- name: Rename database.yml file
+  ansible.builtin.command:
+    cmd: mv database.yml.sample database.yml
+    chdir: /home/ec2-user/raisetech-live8-sample-app/config/
+
+- name: Load env
+  shell: bash -lc "source /home/ec2-user/raisetech-live8-sample-app/.env"
+
+- name: Build webpack
+  ansible.builtin.command:
+    cmd: npm run build
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Start nginx
+  become: yes
+  shell: bash -lc "systemctl start nginx"
+
+- name: Set database
+  block:
+  - name: Create database
+    command:
+      cmd: bash -lc "bundle exec rails db:create RAILS_ENV=production"
+      chdir: /home/ec2-user/raisetech-live8-sample-app/
+  - name: Migrate database
+    command:
+      cmd: bash -lc "bundle exec rails db:migrate RAILS_ENV=production"
+      chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Start unicorn
+  command:
+    cmd: bash -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
