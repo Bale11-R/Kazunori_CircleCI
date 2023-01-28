@@ -10,9 +10,8 @@
   shell: bash -lc "rbenv rehash"
 
 - name: Change directory and bundle install
-  ansible.builtin.shell:
-    cmd: bash -lc "bundle install"
-  args:
+  command:
+    cmd: bundle install
     chdir: /home/ec2-user/raisetech-live8-sample-app/
     executable: /home/ec2-user/.rbenv/shims/bundle
 
@@ -29,9 +28,8 @@
       state: absent
   - name: Make master.key
     become: yes
-    ansible.builtin.shell:
+    command:
       cmd: bash -lc "EDITOR=vim bundle exec rails credentials:edit"
-    args:
       chdir: /home/ec2-user/raisetech-live8-sample-app/
       executable: /home/ec2-user/.rbenv/shims/bundle
   when: not masterkey_stat.stat.exists
@@ -92,22 +90,19 @@
 - name: Set database
   block:
   - name: Create database
-    ansible.builtin.shell:
+    command:
       cmd: bash -lc "bundle exec rails db:create RAILS_ENV=production"
-    args:
       chdir: /home/ec2-user/raisetech-live8-sample-app/
       executable: /home/ec2-user/.rbenv/shims/bundle
   - name: Migrate database
-    ansible.builtin.shell:
+    command:
       cmd: bash -lc "bundle exec rails db:migrate RAILS_ENV=production"
-    args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
       executable: /home/ec2-user/.rbenv/shims/bundle
 
 - name: Start unicorn
-  ansible.builtin.shell:
+  command:
     cmd: bash -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
-  args:  
     chdir: /home/ec2-user/raisetech-live8-sample-app/
     executable: /home/ec2-user/.rbenv/shims/bundle
 
