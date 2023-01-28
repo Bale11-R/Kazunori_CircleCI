@@ -3,8 +3,6 @@
   gem:
     name: bundler
     version: "{ bundler_version }"
-  args:  
-    chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Change directory and install bundler
   ansible.builtin.command:
