@@ -1,5 +1,6 @@
 ---
 - name: Change directory and bundle install
+  become_user: ec2-user
   gem:
     name: bundler
     version: "{ bundler_version }"
