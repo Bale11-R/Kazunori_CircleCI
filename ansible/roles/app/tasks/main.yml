@@ -1,8 +1,7 @@
 ---
 - name: Change directory and bundle install
-  ansible.builtin.shell:
-    shell: bash -lc 'gem install bundler:{ bundler_version }'
-    chdir: /home/ec2-user/raisetech-live8-sample-app/
+  shell: bash -lc 'gem install bundler:{ bundler_version }'
+  chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Change directory and install bundler
   ansible.builtin.command:
@@ -33,8 +32,7 @@
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Get the content of .env
-  ansible.builtin.shell:
-    shell: "cat /home/ec2-user/raisetech-live8-sample-app/.env | grep DATABASE"
+  shell: "cat /home/ec2-user/raisetech-live8-sample-app/.env | grep DATABASE"
   register: database_stat
   failed_when: database_stat.rc > 1
 
