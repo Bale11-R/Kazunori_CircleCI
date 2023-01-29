@@ -11,7 +11,7 @@
 
 - name: Change directory and bundle install
   become_user: ec2-user
-  shell: ~/.rbenv/shims/bundle -lc "bundle install"
+  shell: /home/ec2-user/.rbenv/shims/bundle -lc "bundle install"
   args:  
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
@@ -29,7 +29,7 @@
   - name: Make master.key
     become: yes
     become_user: ec2-user
-    shell: ~/.rbenv/shims/bundle -lc "EDITOR=vim bundle exec rails credentials:edit"
+    shell: /home/ec2-user/.rbenv/shims/bundle -lc "EDITOR=vim bundle exec rails credentials:edit"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
   when: not masterkey_stat.stat.exists
@@ -91,17 +91,17 @@
   become_user: ec2-user
   block:
   - name: Create database
-    shell: ~/.rbenv/shims/bundle -lc "bundle exec rails db:create RAILS_ENV=production"
+    shell: /home/ec2-user/.rbenv/shims/bundle -lc "bundle exec rails db:create RAILS_ENV=production"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
   - name: Migrate database
-    shell: ~/.rbenv/shims/bundle -lc "bundle exec rails db:migrate RAILS_ENV=production"
+    shell: /home/ec2-user/.rbenv/shims/bundle -lc "bundle exec rails db:migrate RAILS_ENV=production"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Start unicorn
   become_user: ec2-user
-  shell: ~/.rbenv/shims/bundle -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
+  shell: /home/ec2-user/.rbenv/shims/bundle -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
   args:  
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
