@@ -87,7 +87,7 @@
     path: /home/ec2-user/raisetech-live8-sample-app
 
 - name: Start nginx
-  become_user: ec2-user
+  become: yes
   shell: bash -lc "systemctl start nginx"
 
 - name: Set database
