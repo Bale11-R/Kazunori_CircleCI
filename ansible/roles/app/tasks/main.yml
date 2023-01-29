@@ -10,7 +10,7 @@
   shell: bash -lc "rbenv rehash"
 
 - name: Change directory and bundle install
-  shell: rbenv -lc "bundle install"
+  shell: ~/.rbenv/shims/bundle -lc "bundle install"
   args:  
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
@@ -27,7 +27,7 @@
       state: absent
   - name: Make master.key
     become: yes
-    shell: rbenv -lc "EDITOR=vim bundle exec rails credentials:edit"
+    shell: ~/.rbenv/shims/bundle -lc "EDITOR=vim bundle exec rails credentials:edit"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
   when: not masterkey_stat.stat.exists
@@ -88,16 +88,16 @@
 - name: Set database
   block:
   - name: Create database
-    shell: rbenv -lc "bundle exec rails db:create RAILS_ENV=production"
+    shell: ~/.rbenv/shims/bundle -lc "bundle exec rails db:create RAILS_ENV=production"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
   - name: Migrate database
-    shell: rbenv -lc "bundle exec rails db:migrate RAILS_ENV=production"
+    shell: ~/.rbenv/shims/bundle -lc "bundle exec rails db:migrate RAILS_ENV=production"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Start unicorn
-  shell: rbenv -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
+  shell: ~/.rbenv/shims/bundle -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
   args:  
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
