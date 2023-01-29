@@ -10,6 +10,7 @@
   shell: bash -lc "rbenv rehash"
 
 - name: Change directory and bundle install
+  become_user: ec2-user
   shell: ~/.rbenv/shims/bundle -lc "bundle install"
   args:  
     chdir: /home/ec2-user/raisetech-live8-sample-app/
@@ -27,6 +28,7 @@
       state: absent
   - name: Make master.key
     become: yes
+    become_user: ec2-user
     shell: ~/.rbenv/shims/bundle -lc "EDITOR=vim bundle exec rails credentials:edit"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
@@ -86,6 +88,7 @@
   shell: bash -lc "systemctl start nginx"
 
 - name: Set database
+  become_user: ec2-user
   block:
   - name: Create database
     shell: ~/.rbenv/shims/bundle -lc "bundle exec rails db:create RAILS_ENV=production"
@@ -97,6 +100,7 @@
       chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Start unicorn
+  become_user: ec2-user
   shell: ~/.rbenv/shims/bundle -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
   args:  
     chdir: /home/ec2-user/raisetech-live8-sample-app/
