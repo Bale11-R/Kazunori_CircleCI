@@ -73,7 +73,7 @@
     regexp: "Rails.application.credentials.dig(:db, :username)"
     replace: "ENV['DATABASE_USER']"
 
-- name: Rename database.yml environment_pass_vars
+- name: Rename database.yml environment_password_vars
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
     regexp: "Rails.application.credentials.dig(:db, :password)"
