@@ -67,17 +67,22 @@
       - "{{ DATABASE_HOSTNAME }}"
   when: database_stat.rc == 1
 
-- name: Rename database.yml environment_vars
+- name: Rename database.yml environment_user_vars
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
-    regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-  with_items:
-  - regexp: 'Rails.application.credentials.dig(:db, :username)'
+    regexp: 'Rails.application.credentials.dig(:db, :username)'
     line: "ENV['DATABASE_USER']"
-  - regexp: 'Rails.application.credentials.dig(:db, :password)'
+
+- name: Rename database.yml environment_pass_vars
+  ansible.builtin.replace:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
+    regexp: 'Rails.application.credentials.dig(:db, :password)'
     line: "ENV['DATABASE_PASSWORD']"
-  - regexp: 'Rails.application.credentials.dig(:db, :host)'
+
+- name: Rename database.yml environment_host_vars
+  ansible.builtin.replace:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
+    regexp: 'Rails.application.credentials.dig(:db, :host)'
     line: "ENV['DATABASE_HOST']"
 
 - name: Rename database.yml file
