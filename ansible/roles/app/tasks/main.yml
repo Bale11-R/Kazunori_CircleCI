@@ -68,9 +68,8 @@
   when: database_stat.rc == 1
 
 - name: Rename database.yml environment_vars
-  lineinfile:
+  ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
-    state: present
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
@@ -102,17 +101,17 @@
   become_user: ec2-user
   block:
   - name: Create database
-    shell: /home/ec2-user/.rbenv/shims/bundle -lc "bundle exec rails db:create RAILS_ENV=production"
-    args:  
+    ansible.builtin.command:
+      cmd: bash -lc "bundle exec rails db:create RAILS_ENV=production"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
   - name: Migrate database
-    shell: /home/ec2-user/.rbenv/shims/bundle -lc "bundle exec rails db:migrate RAILS_ENV=production"
-    args:  
+    ansible.builtin.command:
+      cmd: bash -lc "bundle exec rails db:migrate RAILS_ENV=production"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Start unicorn
   become_user: ec2-user
-  shell: /home/ec2-user/.rbenv/shims/bundle -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
-  args:  
+  ansible.builtin.command:
+    cmd: bash -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
