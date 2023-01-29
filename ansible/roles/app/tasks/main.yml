@@ -36,7 +36,7 @@
 
 - name: Install .env
   gem:
-    name: dotenv
+    name: dotenv-rails
     state: present
     executable: /home/ec2-user/.rbenv/shims/gem
 
@@ -45,6 +45,11 @@
   ansible.builtin.command:
     cmd: bash -lc "bundle install"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Touch .env
+  file:
+    path: /home/ec2-user/raisetech-live8-sample-app/.env
+    state: touch
 
 - name: Get the content of .env
   shell: "cat /home/ec2-user/raisetech-live8-sample-app/.env | grep DATABASE"
