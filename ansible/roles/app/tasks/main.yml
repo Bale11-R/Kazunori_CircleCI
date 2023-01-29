@@ -9,7 +9,7 @@
   become_user: ec2-user
   shell: bash -lc "rbenv rehash"
 
-- name: Change directory and bundle install
+- name: Change directory and bundle install first
   become_user: ec2-user
   ansible.builtin.command:
     cmd: bash -lc "bundle install"
@@ -39,6 +39,12 @@
     name: dotenv
     state: present
     executable: /home/ec2-user/.rbenv/shims/gem
+
+- name: Change directory and bundle install second
+  become_user: ec2-user
+  ansible.builtin.command:
+    cmd: bash -lc "bundle install"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Get the content of .env
   shell: "cat /home/ec2-user/raisetech-live8-sample-app/.env | grep DATABASE"
