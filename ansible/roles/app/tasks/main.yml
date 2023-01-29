@@ -90,6 +90,12 @@
   become: yes
   shell: bash -lc "systemctl start nginx"
 
+- name: Cache_classes change
+  lineinfile:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
+    regexp: '^config.cache_classes'
+    line: 'config.cache_classes = false'
+
 - name: Set database
   become_user: ec2-user
   block:
