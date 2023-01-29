@@ -77,20 +77,20 @@
 - name: Rename database.yml environment_user_vars
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
-    regexp: "username: <%= Rails.application.credentials.dig(:db, :username) %>"
-    replace: "username: <%= ENV['DATABASE_USER'] %>"
+    regexp: "  username: <%= Rails.application.credentials.dig(:db, :username) %>"
+    replace: "  username: <%= ENV['DATABASE_USER'] %>"
 
 - name: Rename database.yml environment_password_vars
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
-    regexp: "password: <%= Rails.application.credentials.dig(:db, :password) %>"
-    replace: "password: <%= ENV['DATABASE_PASSWORD'] %>"
+    regexp: "  password: <%= Rails.application.credentials.dig(:db, :password) %>"
+    replace: "  password: <%= ENV['DATABASE_PASSWORD'] %>"
 
 - name: Rename database.yml environment_host_vars
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
-    regexp: "host: <%= Rails.application.credentials.dig(:db, :host) %>"
-    replace: "host: <%= ENV['DATABASE_HOST'] %>"
+    regexp: "  host: <%= Rails.application.credentials.dig(:db, :host) %>"
+    replace: "  host: <%= ENV['DATABASE_HOST'] %>"
 
 - name: Build webpack
   npm:
@@ -99,6 +99,7 @@
 
 - name: Start nginx
   become: yes
+  become_user: ec2-user
   shell: bash -lc "systemctl start nginx"
 
 - name: Set database
