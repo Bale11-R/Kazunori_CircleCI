@@ -13,7 +13,7 @@
   shell: install
   args:  
     chdir: /home/ec2-user/raisetech-live8-sample-app/
-    executable: /home/ec2-user/.rbenv/shims/bundle
+  executable: /home/ec2-user/.rbenv/shims/bundle
 
 - name: Check if master.key exists
   stat:
@@ -31,7 +31,7 @@
     shell: "EDITOR=vim exec rails credentials:edit"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
-      executable: /home/ec2-user/.rbenv/shims/bundle
+    executable: /home/ec2-user/.rbenv/shims/bundle
   when: not masterkey_stat.stat.exists
 
 - name: Install .env
@@ -93,16 +93,16 @@
     shell: "exec rails db:create RAILS_ENV=production"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
-      executable: /home/ec2-user/.rbenv/shims/bundle
+    executable: /home/ec2-user/.rbenv/shims/bundle
   - name: Migrate database
     shell: "exec rails db:migrate RAILS_ENV=production"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
-      executable: /home/ec2-user/.rbenv/shims/bundle
+    executable: /home/ec2-user/.rbenv/shims/bundle
 
 - name: Start unicorn
   shell: "exec unicorn_rails -c config/unicorn.rb -E production -D"
   args:  
     chdir: /home/ec2-user/raisetech-live8-sample-app/
-    executable: /home/ec2-user/.rbenv/shims/bundle
+  executable: /home/ec2-user/.rbenv/shims/bundle
 
