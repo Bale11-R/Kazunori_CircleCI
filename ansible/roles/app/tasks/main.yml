@@ -93,9 +93,9 @@
     replace: "<%= ENV['DATABASE_HOST'] %>"
 
 - name: Build webpack
-  ansible.builtin.command:
-    cmd: npm run build
-    chdir: /home/ec2-user/raisetech-live8-sample-app/
+  npm:
+    name: build
+    path: /home/ec2-user/raisetech-live8-sample-app/package.json
 
 - name: Start nginx
   become: yes
