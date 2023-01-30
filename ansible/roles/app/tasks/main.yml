@@ -101,6 +101,12 @@
     regexp: '\bconfig.cache_classes = true\b'
     replace: 'config.cache_classes = false'
 
+- name: Active.storage change
+  ansible.builtin.replace:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
+    regexp: '\bconfig.active_storage.service = :amazon\b'
+    replace: 'config.active_storage.service = :local'
+
 - name: Set database
   become_user: ec2-user
   block:
@@ -130,4 +136,3 @@
   ansible.builtin.command:
     cmd: bash -lc "bundle exec unicorn -c config/unicorn.rb -E production -D"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
-
