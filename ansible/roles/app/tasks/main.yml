@@ -121,7 +121,7 @@
     mode: '0777'
 
 - name: Start unicorn
-  become_user: ec2-user
+  become: yes
   ansible.builtin.command:
     cmd: bash -lc "bundle exec unicorn -c config/unicorn.rb -E production -D"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
