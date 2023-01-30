@@ -115,6 +115,11 @@
       chdir: /home/ec2-user/raisetech-live8-sample-app/
     ignore_errors: yes
 
+- name: Permission setting unicorn.rb
+  ansible.builtin.file:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/unicorn.rb
+    mode: '0777'
+
 - name: Start unicorn
   become_user: ec2-user
   ansible.builtin.command:
