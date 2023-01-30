@@ -90,6 +90,11 @@
   become: yes
   shell: bash -lc "systemctl start nginx"
 
+- name: Permission setting production.rb
+  ansible.builtin.file:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
+    mode: '0777'
+
 - name: Cache_classes change
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
