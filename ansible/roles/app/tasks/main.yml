@@ -108,10 +108,12 @@
     ansible.builtin.command:
       cmd: bash -lc "bundle exec rails db:create RAILS_ENV=production"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
+    ignore_errors: yes
   - name: Migrate database
     ansible.builtin.command:
       cmd: bash -lc "bundle exec rails db:migrate RAILS_ENV=production"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
+    ignore_errors: yes
 
 - name: Start unicorn
   become_user: ec2-user
