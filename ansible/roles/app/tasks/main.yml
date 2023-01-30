@@ -27,7 +27,7 @@
       path: /home/ec2-user/raisetech-live8-sample-app/config/credentials.yml.enc
       state: absent
   - name: Make master.key
-    become_user: ec2-user
+    become: yes
     shell: /home/ec2-user/.rbenv/shims/bundle -lc "EDITOR=vim bundle exec rails credentials:edit"
     args:  
       chdir: /home/ec2-user/raisetech-live8-sample-app/
