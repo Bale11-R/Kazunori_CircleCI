@@ -93,8 +93,8 @@
 - name: Cache_classes change
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
-    regexp: '^config.cache_classes'
-    replace: 'config.cache_classes = false'
+    regexp: '\bconfig.cache_classes = true\b'
+    replace: '\bconfig.cache_classes = false\b'
 
 - name: Set database
   become_user: ec2-user
