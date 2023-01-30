@@ -120,8 +120,13 @@
     path: /home/ec2-user/raisetech-live8-sample-app/config/unicorn.rb
     mode: '0777'
 
-- name: Start unicorn
+- name: Changing ownership app_dir
   become: yes
+  ansible.builtin.command:
+    cmd: bash -lc "chown -R username:username /home/ec2-user/raisetech-live8-sample-app"
+
+- name: Start unicorn
+  become_user: ec2-user
   ansible.builtin.command:
     cmd: bash -lc "bundle exec unicorn -c config/unicorn.rb -E production -D"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
