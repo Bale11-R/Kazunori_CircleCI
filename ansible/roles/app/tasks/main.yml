@@ -104,7 +104,7 @@
       chdir: /home/ec2-user/raisetech-live8-sample-app/
     register: Secret_key
   - name: Setting key
-    shell: bash -lc "export SECRET_KEY_BASE='{{ Secret_key.stdout }}'"
+    shell: bash -lc "export secret_key_base='{{ Secret_key.stdout }}'"
 
 - name: Cache_classes change
   ansible.builtin.replace:
