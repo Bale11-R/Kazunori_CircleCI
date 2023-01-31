@@ -11,3 +11,5 @@ bundler_version=2.3.14
 DATABASE_USERNAME=DATABASE_USER = 'Kazunori_Kurata_demo'
 DATABASE_PASSWORD=DATABASE_PASSWORD = 'annkw2009Tooth'
 DATABASE_HOSTNAME=DATABASE_HOST = 'kuratards02.cvtkys245ytx.ap-northeast-1.rds.amazonaws.com'
+
+KEY_VALUE=3ec3d33db679f09a77774db09e12189c%

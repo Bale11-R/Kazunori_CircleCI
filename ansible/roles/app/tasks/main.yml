@@ -15,6 +15,24 @@
     cmd: bash -lc "bundle install"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
+- name: Check if masterkey exists
+  stat:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/master.key
+  register: masterkey_stat
+
+- name: Set master.key
+  block: 
+  - name: Touch master.key
+    file:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/master.key
+      state: touch
+  - name: Edit master.key
+    lineinfile:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/master.key
+      insertafter: EOF
+      line: "{{ KEY_VALUE }}"
+  when: not masterkey_stat.stat.exists
+
 - name: Check .env exists
   stat:
     path: /home/ec2-user/raisetech-live8-sample-app/.env
