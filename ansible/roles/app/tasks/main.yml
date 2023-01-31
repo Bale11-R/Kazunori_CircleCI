@@ -15,24 +15,6 @@
     cmd: bash -lc "bundle install"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
-- name: Check if master.key exists
-  stat:
-    path: /home/ec2-user/raisetech-live8-sample-app/config/master.key
-  register: masterkey_stat
-
-- name: Set master.key
-  block: 
-  - name: Deleate credentials
-    file:
-      path: /home/ec2-user/raisetech-live8-sample-app/config/credentials.yml.enc
-      state: absent
-  - name: Make master.key
-    become: yes
-    ansible.builtin.command:  
-      cmd: bash -lc "EDITOR=vim bundle exec rails credentials:edit" 
-      chdir: /home/ec2-user/
-  when: not masterkey_stat.stat.exists
-
 - name: Check .env exists
   stat:
     path: /home/ec2-user/raisetech-live8-sample-app/.env
@@ -72,6 +54,11 @@
       - "{{ DATABASE_PASSWORD }}"
       - "{{ DATABASE_HOSTNAME }}"
   when: database_stat.rc == 1
+
+- name: Rename database.yml
+  ansible.builtin.command:
+    cmd: mv database.yml.sample database.yml
+    chdir: /home/ec2-user/raisetech-live8-sample-app/config/
 
 - name: Setting database.yml
   template:
