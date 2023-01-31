@@ -29,8 +29,8 @@
   - name: Make master.key
     become: yes
     ansible.builtin.command:  
-      cmd: /home/ec2-user/.rbenv/shims/bundle -lc "EDITOR=vim bundle exec rails credentials:edit" 
-      chdir: /home/ec2-user/raisetech-live8-sample-app/
+      cmd: bash -lc "EDITOR=vim bundle exec rails credentials:edit" 
+      chdir: /home/ec2-user/
   when: not masterkey_stat.stat.exists
 
 - name: Check .env exists
