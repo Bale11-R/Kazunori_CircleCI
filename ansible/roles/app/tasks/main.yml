@@ -1,4 +1,15 @@
 ---
+- name: Check sample
+  stat:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
+  register: sample_stat
+
+- name: Rename database
+  ansible.builtin.command:
+    cmd: mv database.yml.sample database.yml
+    chdir: /home/ec2-user/raisetech-live8-sample-app/config/
+  when: sample_stat.stat.exists
+
 - name: Change directory and install bundler
   gem:
     name: bundler
@@ -96,7 +107,7 @@
 
 - name: Secret key setting
   become_user: ec2-user
-  shell: bash -lc "export secret_key_base='{{ KEY_VALUE }}'"
+  shell: bash -lc "export SECRET_KEY_BASE='{{ KEY_VALUE }}'"
 
 - name: Cache_classes change
   ansible.builtin.replace:
