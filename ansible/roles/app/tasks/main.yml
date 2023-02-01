@@ -1,5 +1,5 @@
 ---
-- name: Check sample
+- name: Check database.yml.sample
   stat:
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
   register: sample_stat
