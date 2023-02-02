@@ -105,10 +105,6 @@
     path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
     mode: '0777'
 
-- name: Secret key setting
-  become_user: ec2-user
-  shell: bash -lc "export SECRET_KEY_BASE='{{ KEY_VALUE }}'"
-
 - name: Cache_classes change
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
