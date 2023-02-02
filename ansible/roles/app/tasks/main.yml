@@ -118,17 +118,21 @@
     replace: 'config.active_storage.service = :local'
 
 - name: Set database
-  become_user: ec2-user
+  become: yes
   block:
   - name: Create database
     ansible.builtin.command:
-      cmd: bash -lc "bundle exec rails db:create RAILS_ENV=production"
+      cmd: bash -lc "bundle exec rails db:create"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
+    environment:
+      RAILS_ENV: production
     ignore_errors: yes
   - name: Migrate database
     ansible.builtin.command:
-      cmd: bash -lc "bundle exec rails db:migrate RAILS_ENV=production"
+      cmd: bash -lc "bundle exec rails db:migrate"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
+    environment:
+      RAILS_ENV: production
     ignore_errors: yes
 
 - name: Permission setting unicorn.rb
@@ -144,5 +148,5 @@
 - name: Start unicorn
   become_user: ec2-user
   ansible.builtin.command:
-    cmd: bash -lc "bundle exec unicorn -c config/unicorn.rb -E production -D"
+    cmd: bash -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
