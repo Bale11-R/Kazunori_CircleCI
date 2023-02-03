@@ -122,12 +122,16 @@
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/log/producition.log
     state: touch
+    owner: ec2-user
+    group: ec2-user
 
 - name: Changing ownership log
   become_user: ec2-user
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/log/producition.log
     mode: '0664'
+    owner: ec2-user
+    group: ec2-user
 
 - name: Set database
   become_user: ec2-user
