@@ -117,11 +117,11 @@
     regexp: '\bconfig.active_storage.service = :amazon\b'
     replace: 'config.active_storage.service = :local'
 
-- name: Changing ownership app_dir
-  become: yes
+- name: Changing ownership log
   become_user: ec2-user
-  ansible.builtin.command:
-    cmd: bash -lc "chown $(id -u):$(id -g) /home/ec2-user/raisetech-live8-sample-app/log"
+  ansible.builtin.file:
+    path: /home/ec2-user/raisetech-live8-sample-app/log/producition.log
+    mode: '0664'
 
 - name: Set database
   become_user: ec2-user
