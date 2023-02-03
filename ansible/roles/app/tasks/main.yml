@@ -117,6 +117,12 @@
     regexp: '\bconfig.active_storage.service = :amazon\b'
     replace: 'config.active_storage.service = :local'
 
+- name: Touch log
+  become_user: ec2-user
+  ansible.builtin.file:
+    path: /home/ec2-user/raisetech-live8-sample-app/log/producition.log
+    state: touch
+
 - name: Changing ownership log
   become_user: ec2-user
   ansible.builtin.file:
