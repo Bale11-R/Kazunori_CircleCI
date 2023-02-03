@@ -118,7 +118,7 @@
     replace: 'config.active_storage.service = :local'
 
 - name: Changing ownership app_dir
-  become: yes
+  become_user: ec2-user
   ansible.builtin.command:
     cmd: bash -lc "chown $(id -u):$(id -g) /home/ec2-user/raisetech-live8-sample-app/log"
 
@@ -137,6 +137,7 @@
     ignore_errors: yes
 
 - name: Permission setting unicorn.rb
+  become_user: ec2-user
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/config/unicorn.rb
     mode: '0777'
