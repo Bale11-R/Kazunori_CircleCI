@@ -118,6 +118,7 @@
     replace: 'config.active_storage.service = :local'
 
 - name: Changing ownership app_dir
+  become: yes
   become_user: ec2-user
   ansible.builtin.command:
     cmd: bash -lc "chown $(id -u):$(id -g) /home/ec2-user/raisetech-live8-sample-app/log"
