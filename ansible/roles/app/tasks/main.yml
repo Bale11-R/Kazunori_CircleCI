@@ -123,7 +123,7 @@
     cmd: bash -lc "chown $(id -u):$(id -g) /home/ec2-user/raisetech-live8-sample-app/log"
 
 - name: Set database
-  become: yes
+  become_user: ec2-user
   block:
   - name: Create database
     ansible.builtin.command:
