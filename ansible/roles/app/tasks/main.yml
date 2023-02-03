@@ -117,33 +117,29 @@
     regexp: '\bconfig.active_storage.service = :amazon\b'
     replace: 'config.active_storage.service = :local'
 
+- name: Changing ownership app_dir
+  become: yes
+  ansible.builtin.command:
+    cmd: bash -lc "chown $(id -u):$(id -g) /home/ec2-user/raisetech-live8-sample-app/log"
+
 - name: Set database
   become: yes
   block:
   - name: Create database
     ansible.builtin.command:
-      cmd: bash -lc "bundle exec rails db:create"
+      cmd: bash -lc "bundle exec rails db:create RAILS_ENV=production"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
-    environment:
-      RAILS_ENV: production
     ignore_errors: yes
   - name: Migrate database
     ansible.builtin.command:
-      cmd: bash -lc "bundle exec rails db:migrate"
+      cmd: bash -lc "bundle exec rails db:migrate RAILS_ENV=production"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
-    environment:
-      RAILS_ENV: production
     ignore_errors: yes
 
 - name: Permission setting unicorn.rb
   ansible.builtin.file:
     path: /home/ec2-user/raisetech-live8-sample-app/config/unicorn.rb
     mode: '0777'
-
-- name: Changing ownership app_dir
-  become: yes
-  ansible.builtin.command:
-    cmd: bash -lc "chown $(id -u):$(id -g) /home/ec2-user/raisetech-live8-sample-app"
 
 - name: Start unicorn
   become_user: ec2-user
