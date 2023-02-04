@@ -1,4 +1,11 @@
 ---
+- name: Change user admin
+  become: yes
+  ansible.builtin.file:
+    path: /home/ec2-user
+    state: directory
+    mode: 0701
+
 - name: Check database.yml.sample
   stat:
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
@@ -19,7 +26,7 @@
 - name: Add database env
   lineinfile: 
     path: /home/ec2-user/.bash_profile
-    line: 'export "{{ item }}"'
+    line: 'export {{ item }}'
   with_items:
       - "{{ DATABASE_USERNAME }}"
       - "{{ DATABASE_PASSWORD }}"
