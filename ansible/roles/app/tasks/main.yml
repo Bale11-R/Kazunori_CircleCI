@@ -91,6 +91,9 @@
     owner: ec2-user
     group: ec2-user
 
+- name: Load env
+  shell: bash -lc "source /home/ec2-user/raisetech-live8-sample-app/.env"
+
 - name: Build webpack
   npm:
     name: build
