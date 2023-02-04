@@ -8,8 +8,8 @@ ruby_dir="{{ rbenv_path }}"/versions/"{{ ruby_version }}"
 
 bundler_version=2.3.14
 
-DATABASE_USERNAME=DATABASE_USER='Kazunori_Kurata_demo'
-DATABASE_PASSWORD=DATABASE_PASSWORD='annkw2009Tooth'
-DATABASE_HOSTNAME=DATABASE_HOST='kuratards02.cvtkys245ytx.ap-northeast-1.rds.amazonaws.com'
+DATABASE_USERNAME=DATABASE_USER: Kazunori_Kurata_demo
+DATABASE_PASSWORD=DATABASE_PASSWORD: annkw2009Tooth
+DATABASE_HOSTNAME=DATABASE_HOST: kuratards02.cvtkys245ytx.ap-northeast-1.rds.amazonaws.com
 
 KEY_VALUE=8fb45a2f92466ade483632cec9ba71ab
