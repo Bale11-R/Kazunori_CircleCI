@@ -1,5 +1,5 @@
 ---
-- name: Change user admin
+- name: Change user permission
   become: yes
   ansible.builtin.file:
     path: /home/ec2-user
