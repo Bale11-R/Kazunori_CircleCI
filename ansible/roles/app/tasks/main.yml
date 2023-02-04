@@ -1,4 +1,10 @@
 ---
+- name: Add user permission
+  ansible.builtin.file:
+    path: /home/ec2-user
+    state: directory
+    mode: 0777
+
 - name: Check database.yml.sample
   stat:
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
@@ -72,7 +78,7 @@
     path: /home/ec2-user/raisetech-live8-sample-app
 
 - name: Start nginx
-  become_user: ec2-user
+  become: yes
   shell: bash -lc "systemctl start nginx"
 
 - name: Cache_classes change
