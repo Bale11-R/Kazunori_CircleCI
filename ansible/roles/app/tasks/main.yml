@@ -80,7 +80,9 @@
 
 - name: Start nginx
   become: yes
-  shell: bash -lc "systemctl start nginx"
+  ansible.builtin.command:
+    cmd: bash -lc "systemctl start nginx"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Cache_classes change
   ansible.builtin.replace:
