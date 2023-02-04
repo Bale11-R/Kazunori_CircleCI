@@ -127,6 +127,18 @@
     state: directory
   when: not mysql.stat.exists
 
+- name: Check mysql_socket
+  stat:
+    path: /var/lib/mysql/mysql.sock
+  register: mysql_sock
+
+- name: Make mysql_socket
+  become: yes
+  file:
+    path: /var/lib/mysql/mysql.sock
+    state: touch
+  when: not mysql_sock.stat.exists
+
 - name: Set database
   become_user: ec2-user
   block:
