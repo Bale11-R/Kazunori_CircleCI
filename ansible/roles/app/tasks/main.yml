@@ -62,13 +62,13 @@
     cmd: bash -lc "bundle install --without development test"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
-- name: Touch .env
+- name: Touch env
   file:
     path: /home/ec2-user/raisetech-live8-sample-app/.env
     state: touch
   when: not env_stat.stat.exists
 
-- name: Get the content of .env
+- name: Get the content of env
   shell: "cat /home/ec2-user/raisetech-live8-sample-app/.env | grep DATABASE"
   register: database_stat
   failed_when: database_stat.rc > 1
