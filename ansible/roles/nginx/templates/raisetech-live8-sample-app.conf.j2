@@ -21,7 +21,7 @@ server_names_hash_bucket_size 128;
           root /home/ec2-user/raisetech-live8-sample-app/public;
       }
 
-      location @unicorn {
+      location / {
           proxy_pass http://unicorn;
 
 	  proxy_set_header X-Real-IP $remote_addr;
