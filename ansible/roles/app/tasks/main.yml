@@ -23,7 +23,7 @@
 - name: Change directory and bundle install first
   become_user: ec2-user
   ansible.builtin.command:
-    cmd: bash -lc "bundle install"
+    cmd: bash -lc "bundle install --without development test"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Check if masterkey exists
@@ -59,7 +59,7 @@
 - name: Change directory and bundle install second
   become_user: ec2-user
   ansible.builtin.command:
-    cmd: bash -lc "bundle install"
+    cmd: bash -lc "bundle install --without development test"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
 - name: Touch .env
