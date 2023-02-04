@@ -4,7 +4,7 @@
     path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
   register: sample_stat
 
-- name: Rename database
+- name: Rename database file name
   ansible.builtin.command:
     cmd: mv database.yml.sample database.yml
     chdir: /home/ec2-user/raisetech-live8-sample-app/config/
