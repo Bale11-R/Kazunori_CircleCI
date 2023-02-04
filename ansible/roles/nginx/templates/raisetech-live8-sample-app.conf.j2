@@ -1,6 +1,7 @@
 error_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.error.log;
 access_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.access.log;
 
+user ec2-user
 server_names_hash_bucket_size 128;
 
   upstream unicorn_server {
