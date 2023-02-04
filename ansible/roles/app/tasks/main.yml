@@ -16,9 +16,18 @@
     version: "{{ bundler_version }}"
     executable: /home/ec2-user/.rbenv/shims/gem
 
-- name: Rehash rbenv
+- name: Add database env
+  lineinfile: 
+    path: /home/ec2-user/.bash_profile
+    line: 'export "{{ item }}"'
+  with_items:
+      - "{{ DATABASE_USERNAME }}"
+      - "{{ DATABASE_PASSWORD }}"
+      - "{{ DATABASE_HOSTNAME }}"
+
+- name: Load database env setting
   become_user: ec2-user
-  shell: bash -lc "rbenv rehash"
+  shell: bash -lc "source ~/.bash_profile"
 
 - name: Change directory and bundle install first
   become_user: ec2-user
@@ -43,22 +52,6 @@
       cmd: bash -lc "EDITOR=vim bundle exec rails credentials:edit"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
   when: not masterkey_stat.stat.exists
-
-- name: Get the content of credentials.yml.enc
-  shell: "cat /home/ec2-user/raisetech-live8-sample-app/config/credentials.yml.enc | grep DATABASE"
-  register: cr_stat
-  failed_when: cr_stat.rc > 1
-
-- name: Set credentials enviroument
-  lineinfile:
-    path: /home/ec2-user/raisetech-live8-sample-app/config/credentials.yml.enc
-    insertafter: EOF
-    line: "{{ item }}"
-  with_items:
-      - "{{ DATABASE_USERNAME }}"
-      - "{{ DATABASE_PASSWORD }}"
-      - "{{ DATABASE_HOSTNAME }}"
-  when: cr_stat.rc == 1
 
 - name: Change directory and bundle install second
   become_user: ec2-user
