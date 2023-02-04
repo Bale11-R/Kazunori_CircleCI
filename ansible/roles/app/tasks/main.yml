@@ -72,7 +72,7 @@
     path: /home/ec2-user/raisetech-live8-sample-app
 
 - name: Start nginx
-  become: yes
+  become_user: ec2-user
   shell: bash -lc "systemctl start nginx"
 
 - name: Cache_classes change
