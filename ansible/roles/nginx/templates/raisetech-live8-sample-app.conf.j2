@@ -3,7 +3,7 @@ access_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.access.log;
 
 server_names_hash_bucket_size 128;
 
-upstream unicorn_server {
+upstream unicorn {
     server unix:/home/ec2-user/raisetech-live8-sample-app/unicorn.sock;
 }
 
@@ -32,7 +32,7 @@ server {
         add_header 'Access-Control-Allow-Credentials' 'true';
 
         if (!-f $request_filename) {
-            proxy_pass http://unicorn_server;
+            proxy_pass http://unicorn;
             break;
         }
     }
