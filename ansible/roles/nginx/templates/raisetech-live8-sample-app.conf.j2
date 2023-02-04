@@ -1,10 +1,9 @@
 error_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.error.log;
 access_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.access.log;
 
-user ec2-user
 server_names_hash_bucket_size 128;
 
-  upstream unicorn_server {
+  upstream unicorn {
       server unix:/home/ec2-user/raisetech-live8-sample-app/unicorn.sock;
   }
 
@@ -22,8 +21,8 @@ server_names_hash_bucket_size 128;
           root /home/ec2-user/raisetech-live8-sample-app/public;
       }
 
-      location / {
-          proxy_pass http://unicorn_server;
+      location @unicorn {
+          proxy_pass http://unicorn;
 
 	  proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -35,7 +34,7 @@ server_names_hash_bucket_size 128;
           add_header 'Access-Control-Allow-Credentials' 'true';
 
           if (!-f $request_filename) {
-              proxy_pass http://unicorn_server;
+              proxy_pass http://unicorn;
               break;
           }
       }
