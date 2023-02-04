@@ -4,7 +4,7 @@ access_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.access.log;
 server_names_hash_bucket_size 128;
 
 upstream unicorn_server {
-    server unix:/home/ec2-user/raisetech-live8-sample-app/tmp/sockets/unicorn.sock;
+    server unix:/home/ec2-user/raisetech-live8-sample-app/unicorn.sock;
 }
 
 server {
