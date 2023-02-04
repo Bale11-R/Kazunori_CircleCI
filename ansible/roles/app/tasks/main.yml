@@ -103,11 +103,6 @@
   become: yes
   shell: bash -lc "systemctl start nginx"
 
-- name: Permission setting production.rb
-  ansible.builtin.file:
-    path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
-    mode: '0777'
-
 - name: Cache_classes change
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
@@ -119,6 +114,18 @@
     path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
     regexp: '\bconfig.active_storage.service = :amazon\b'
     replace: 'config.active_storage.service = :local'
+
+- name: Check mysql_dir
+  stat:
+    path: /var/lib/mysql
+  register: mysql
+
+- name: Make mysql_dir
+  become: yes
+  file:
+    path: /var/lib/mysql
+    state: directory
+  when: not mysql.stat.exists
 
 - name: Set database
   become_user: ec2-user
@@ -133,12 +140,6 @@
       cmd: bash -lc "bundle exec rails db:migrate RAILS_ENV=production"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
     ignore_errors: yes
-
-- name: Permission setting unicorn.rb
-  become_user: ec2-user
-  ansible.builtin.file:
-    path: /home/ec2-user/raisetech-live8-sample-app/config/unicorn.rb
-    mode: '0777'
 
 - name: Start unicorn
   become_user: ec2-user
