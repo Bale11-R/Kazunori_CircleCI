@@ -22,7 +22,7 @@
 
 - name: Setting Nginx
   template:
-    src: roles/nginx/templates/raisetech-live8-sample-app.conf.j2
-    dest: /etc/nginx/conf.d/raisetech-live8-sample-app.conf
+    src: roles/nginx/templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
     owner: ec2-user
     group: ec2-user
