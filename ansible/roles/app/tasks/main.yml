@@ -74,13 +74,14 @@
     group: ec2-user
 
 - name: Nginx config username fix
-  become: yes
+  become_user: ec2-user
   ansible.builtin.replace:
     path: /etc/nginx/nginx.conf
     regexp: '\buser nginx\b'
     replace: 'user ec2-user'
 
 - name: Build webpack setting
+  become_user: ec2-user
   npm:
     name: build
     path: /home/ec2-user/raisetech-live8-sample-app
@@ -120,5 +121,5 @@
 - name: Start unicorn
   become_user: ec2-user
   ansible.builtin.command:
-    cmd: bash -lc "bundle exec unicorn_rails -c config/unicorn.rb -E production -D"
+    cmd: bash -lc "bundle exec unicorn -c config/unicorn.rb -E production -D"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
