@@ -5,7 +5,6 @@
 user ec2-user;
 worker_processes auto;
 pid /run/nginx.pid;
-
 # Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
 include /usr/share/nginx/modules/*.conf;
 
@@ -19,7 +18,7 @@ http {
                       '"$http_user_agent" "$http_x_forwarded_for"';
 
     error_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.error.log;
-    access_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.access.log main;
+    access_log /home/ec2-user/raisetech-live8-sample-app/log/nginx.access.log;
 
 
     sendfile            on;
@@ -41,8 +40,7 @@ http {
     }
 
     server {
-        listen       80;
-        listen       [::]:80;
+        listen       80 default;
         server_name  kurata-alb-02-190809292.ap-northeast-1.elb.amazonaws.com;
         # root         /usr/share/nginx/html;
         root /home/ec2-user/raisetech-live8-sample-app/public; 
@@ -103,5 +101,4 @@ http {
 #            location = /50x.html {
 #        }
 #    }
-
 }
