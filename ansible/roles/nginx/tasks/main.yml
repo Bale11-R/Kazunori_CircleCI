@@ -18,7 +18,7 @@
     path: /etc/nginx
     owner: ec2-user
     group: ec2-user
-    mode: '0755'
+    mode: '0775'
 
 - name: Setting Nginx
   template:

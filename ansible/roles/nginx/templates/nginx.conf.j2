@@ -2,7 +2,7 @@
 #   * Official English Documentation: http://nginx.org/en/docs/
 #   * Official Russian Documentation: http://nginx.org/ru/docs/
 
-user nginx;
+user ec2-user;
 worker_processes auto;
 pid /run/nginx.pid;
 
@@ -48,7 +48,7 @@ http {
         root /home/ec2-user/raisetech-live8-sample-app/public; 
 
         # Load configuration files for the default server block.
-        include /etc/nginx/default.d/*.conf;
+        # include /etc/nginx/default.d/*.conf;
 
         location @unicorn {
 	  
