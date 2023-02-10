@@ -36,7 +36,7 @@ jobs:
           playbook-options: '-u ec2-user -i ansible/hosts/inventory --private-key ~/.ssh/id_rsa'
   executeServerspec:
     docker:
-      - image: circleci/ruby:3.1.2-node
+      - image: cimg/ruby:3.1.2-node
     steps:
       - checkout
       - run :
