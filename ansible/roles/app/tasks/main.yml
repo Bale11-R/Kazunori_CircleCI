@@ -118,6 +118,12 @@
       chdir: /home/ec2-user/raisetech-live8-sample-app/
     ignore_errors: yes
 
+- name: Assets compile
+  become_user: ec2-user
+  ansible.builtin.command:
+    cmd: bash -lc "bundle exec rails assets:precompile RAILS_ENV=production"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
 - name: Start unicorn
   become_user: ec2-user
   ansible.builtin.command:
