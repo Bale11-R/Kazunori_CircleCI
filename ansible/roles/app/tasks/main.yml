@@ -92,13 +92,13 @@
     cmd: bash -lc "systemctl start nginx"
     chdir: /home/ec2-user/raisetech-live8-sample-app/
 
-- name: Cache_classes change
+- name: Cache classes change
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
     regexp: '\bconfig.cache_classes = true\b'
     replace: 'config.cache_classes = false'
 
-- name: Active.storage change
+- name: Active storage change
   ansible.builtin.replace:
     path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
     regexp: '\bconfig.active_storage.service = :amazon\b'
