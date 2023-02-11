@@ -14,7 +14,8 @@ else
   set :sudo_password, ENV['SUDO_PASSWORD']
 end
 
-host = ENV['TARGET_HOST']
+
+host = TARGETHOST
 
 options = Net::SSH::Config.for(host)
 
@@ -24,7 +25,7 @@ set :host,        options[:host_name] || host
 set :ssh_options, options
 
 # Disable sudo
-# set :disable_sudo, true
+set :disable_sudo, true
 
 
 # Set environment variables
