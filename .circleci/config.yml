@@ -40,6 +40,9 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - 2f:f8:f2:1f:3b:9f:71:60:d1:96:32:28:c6:c2:28:4c
       - ruby/install:
           version: '3.1.2'
       - run :
