@@ -37,15 +37,16 @@ jobs:
           playbook-options: '-u ec2-user -i ansible/hosts/inventory --private-key ~/.ssh/id_rsa'
   executeServerspec:
     docker:
-      - image: cimg/ruby:3.1.2-node
+      - image: 'cimg/base:stable'
     steps:
       - checkout
+      - ruby/install:
+          version: '3.1.2'
       - run :
-          name: test application
+          name: executeServerspec
           command: |
             gem install bundler
             gem install serverspec
-            gem install rake
             gem install ed25519
             gem install bcrypt_pbkdf
             rake spec
