@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+listen_port = 80
+
 describe package('git') do
     it { should be_installed }
 end
@@ -9,9 +11,9 @@ describe service('nginx') do
 end
 
 describe command("ps aux | grep unicorn" ) do
-    its(:stdout) { should contain("unicorn_rails master") }
+    its(:stdout) { should contain("unicorn master") }
 end
 
-describe port(80) do
+describe port(listen_port) do
     it { should be_listening }
 end
