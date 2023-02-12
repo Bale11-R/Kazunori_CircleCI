@@ -15,7 +15,7 @@ else
 end
 
 
-host = ENV['TARGETHOST']
+host = ENV['TARGET_HOST']
 
 options = Net::SSH::Config.for(host)
 
