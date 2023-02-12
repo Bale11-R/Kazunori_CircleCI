@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-listen_port = 80
+listen_port = 3000
 
 describe package('git') do
     it { should be_installed }
