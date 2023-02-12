@@ -1,7 +1,7 @@
 # host情報
-ansible/hosts/inventory
+inventory
 
 # RDSセキュリティ情報
-cloudformation/RDS.yml
+RDS.yml
 
 
