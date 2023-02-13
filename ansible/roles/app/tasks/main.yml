@@ -1,0 +1,131 @@
+---
+- name: Change user permission
+  become: yes
+  ansible.builtin.file:
+    path: /home/ec2-user
+    state: directory
+    mode: 0755
+
+- name: Check database.yml.sample
+  stat:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/database.yml.sample
+  register: sample_stat
+
+- name: Rename database file name
+  ansible.builtin.command:
+    cmd: mv database.yml.sample database.yml
+    chdir: /home/ec2-user/raisetech-live8-sample-app/config/
+  when: sample_stat.stat.exists
+
+- name: Change directory and install bundler
+  gem:
+    name: bundler
+    version: "{{ bundler_version }}"
+    executable: /home/ec2-user/.rbenv/shims/gem
+
+- name: Add database env
+  lineinfile: 
+    path: /home/ec2-user/.bash_profile
+    line: 'export {{ item }}'
+  with_items:
+      - "{{ DATABASE_USERNAME }}"
+      - "{{ DATABASE_PASSWORD }}"
+      - "{{ DATABASE_HOSTNAME }}"
+
+- name: Load database env setting
+  become_user: ec2-user
+  shell: bash -lc "source ~/.bash_profile"
+
+- name: Change directory and bundle install first
+  become_user: ec2-user
+  ansible.builtin.command:
+    cmd: bash -lc "bundle install --without development test"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Check if masterkey exists
+  stat:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/master.key
+  register: masterkey_stat
+
+- name: Set master.key
+  block:
+  - name: Deleate credentials
+    file:
+      path: /home/ec2-user/raisetech-live8-sample-app/config/credentials.yml.enc
+      state: absent
+  - name: Make master.key
+    become: yes
+    ansible.builtin.command:
+      cmd: "EDITOR=vim bundle exec rails credentials:edit"
+      chdir: /home/ec2-user/raisetech-live8-sample-app/
+  when: not masterkey_stat.stat.exists
+
+- name: Change directory and bundle install second
+  become_user: ec2-user
+  ansible.builtin.command:
+    cmd: bash -lc "bundle install --without development test"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Setting database.yml
+  template:
+    src: roles/app/templates/database.yml
+    dest: /home/ec2-user/raisetech-live8-sample-app/config/database.yml
+    owner: ec2-user
+    group: ec2-user
+
+- name: Nginx config username fix
+  become_user: ec2-user
+  ansible.builtin.replace:
+    path: /etc/nginx/nginx.conf
+    regexp: '\buser nginx\b'
+    replace: 'user ec2-user'
+
+- name: Build webpack setting
+  become_user: ec2-user
+  npm:
+    name: build
+    path: /home/ec2-user/raisetech-live8-sample-app
+
+- name: Start nginx
+  become: yes
+  ansible.builtin.command:
+    cmd: bash -lc "systemctl start nginx"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Cache classes change
+  ansible.builtin.replace:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
+    regexp: '\bconfig.cache_classes = true\b'
+    replace: 'config.cache_classes = false'
+
+- name: Active storage change
+  ansible.builtin.replace:
+    path: /home/ec2-user/raisetech-live8-sample-app/config/environments/production.rb
+    regexp: '\bconfig.active_storage.service = :amazon\b'
+    replace: 'config.active_storage.service = :local'
+
+- name: Set database
+  become_user: ec2-user
+  block:
+  - name: Create database
+    ansible.builtin.command:
+      cmd: bash -lc "bundle exec rails db:create RAILS_ENV=production"
+      chdir: /home/ec2-user/raisetech-live8-sample-app/
+    ignore_errors: yes
+  - name: Migrate database
+    ansible.builtin.command:
+      cmd: bash -lc "bundle exec rails db:migrate RAILS_ENV=production"
+      chdir: /home/ec2-user/raisetech-live8-sample-app/
+    ignore_errors: yes
+
+- name: Assets precompile
+  become_user: ec2-user
+  ansible.builtin.command:
+    cmd: bash -lc "bundle exec rails assets:precompile RAILS_ENV=production"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/
+
+- name: Start unicorn
+  become_user: ec2-user
+  ansible.builtin.command:
+    cmd: bash -lc "bundle exec unicorn -c config/unicorn.rb -E production -D"
+    chdir: /home/ec2-user/raisetech-live8-sample-app/

@@ -1,0 +1,12 @@
+---
+- hosts: TargetNode
+  become: yes
+  roles:
+    - { role: git, tags: git }
+    - { role: webpack, tags: webpack }
+    - { role: mysql, tags: mysql }
+    - { role: ruby, tags: ruby }
+    - { role: clone, tags: clone }
+    - { role: nginx, tags: nginx }
+    - { role: app, tags: app }
+

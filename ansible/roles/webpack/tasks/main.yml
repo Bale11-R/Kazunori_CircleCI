@@ -1,0 +1,82 @@
+---
+- name: check if nodejs already installed
+  stat:
+    path: /usr/bin/node
+  register: nodejs_bin
+
+- name: cache clean
+  ansible.builtin.command:
+    cmd: yum clean all
+  args:
+    warn: no
+  when: not nodejs_bin.stat.exists
+
+- file:
+    path: /var/cache/yum/
+    state: absent
+  when: not nodejs_bin.stat.exists
+
+- file:
+    path: /etc/yum.repos.d/nodesource-el7.repo
+    state: absent
+  when: not nodejs_bin.stat.exists
+
+- name: Fetch nodejs
+  ansible.builtin.uri: 
+    url: https://rpm.nodesource.com/setup_16.x
+    return_content: yes
+  register: nodejs_installer
+  when: not nodejs_bin.stat.exists
+
+- name: Run nodejs_installer
+  become: yes
+  ansible.builtin.shell:
+    cmd: bash -
+    stdin: "{{ nodejs_installer.content }}"
+  when: not nodejs_bin.stat.exists
+
+- name: install present nodejs
+  become: yes
+  yum:
+    name: nodejs
+    state: present
+  when: not nodejs_bin.stat.exists
+
+- name: check if yarn already installed
+  stat:
+    path: /usr/bin/yarn
+  register: yarn_bin
+
+- name: Fetch yarn
+  ansible.builtin.uri: 
+    url: https://dl.yarnpkg.com/rpm/yarn.repo
+    return_content: yes
+  register: yarn_installer
+  when: not yarn_bin.stat.exists
+
+- name: Run yarn_installer
+  ansible.builtin.shell:
+    cmd: tee /etc/yum.repos.d/yarn.repo
+    stdin: "{{ yarn_installer.content }}"
+  when: not yarn_bin.stat.exists
+
+- name: install present yarn temporary
+  become: yes
+  yum:
+    name: yarn
+    state: present
+  when: not yarn_bin.stat.exists
+
+- name: install present package temporary
+  become: yes
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - gcc
+      - clang
+      - openssl-devel
+      - zlib-devel
+      - mysql-devel
+      - readline-devel

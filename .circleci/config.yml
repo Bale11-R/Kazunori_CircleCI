@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@3.1.4
+  ansible-playbook: orbss/ansible-playbook@0.0.5
 
 jobs:
   executeCloudFormation:
@@ -20,12 +21,28 @@ jobs:
             aws cloudformation deploy --template cloudformation/Security.yml --stack-name Security-02
             aws cloudformation deploy --template cloudformation/EC2.yml --stack-name EC2-01
             aws cloudformation deploy --template cloudformation/ALB.yml --stack-name ALB-02
-            aws ssm put-parameter --name rds-master-user-password --value 'Lyxbs56R3aqP' --type SecureString --overwrite
             aws cloudformation deploy --template cloudformation/RDS.yml --stack-name RDS-02
+  executeAnsible:
+    executor: ansible-playbook/default
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - 2f:f8:f2:1f:3b:9f:71:60:d1:96:32:28:c6:c2:28:4c
+      - ansible-playbook/install:
+          version: '2.10.7'
+      - ansible-playbook/playbook:
+          playbook: ansible/playbook.yml
+          playbook-options: '-u ec2-user -i ansible/hosts/inventory --private-key ~/.ssh/id_rsa'
+
 workflows:
-  raisetech-cfn-deploy:
+  raisetech-lecture13:
     jobs:
       - executeCloudFormation:
-        filters:
-          branches:
-            only: cfn
+          filters:
+            branches:
+              only: cfn
+      - executeAnsible:
+          filters:
+            branches:
+              only: ansible

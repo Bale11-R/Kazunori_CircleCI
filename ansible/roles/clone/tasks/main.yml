@@ -1,0 +1,12 @@
+---
+- name: Check sample repo
+  stat:
+    path: /home/ec2-user/raisetech-live8-sample-app
+  register: repo_stat
+
+- name: Git clone sample repo
+  become_user: ec2-user
+  ansible.builtin.git:
+    repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
+    dest: /home/ec2-user/raisetech-live8-sample-app
+  when: not repo_stat.stat.exists
