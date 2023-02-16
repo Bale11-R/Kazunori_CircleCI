@@ -53,7 +53,7 @@ Resources:
 
 Outputs:
     StackEC2:
-        Description: EC2 ID
+        Description: EC2ID
         Value: !Ref KurataEC202
         Export:
             Name: !Sub "${AWS::StackName}-EC2ID"
