@@ -55,10 +55,10 @@ jobs:
 workflows:
   raisetech-lecture13:
     jobs:
-      - executeCloudFormation:
+      - executeCloudFormation
       - executeAnsible:
-        requires:
-          - executeCloudFormation
+          requires:
+            - executeCloudFormation
       - executeServerspec:
-        requires:
-          - executeAnsible
+          requires: 
+            - executeAnsible
