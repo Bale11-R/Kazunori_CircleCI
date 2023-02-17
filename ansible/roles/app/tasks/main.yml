@@ -54,6 +54,7 @@
       path: /home/ec2-user/raisetech-live8-sample-app/config/credentials.yml.enc
       state: absent
   - name: Make master.key
+    become_user: ec2-user
     ansible.builtin.command:
       cmd: "EDITOR=vim bundle exec rails credentials:edit"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
