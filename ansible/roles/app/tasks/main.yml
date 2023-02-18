@@ -55,7 +55,7 @@
       state: absent
   - name: Make master.key
     ansible.builtin.command:
-      cmd: bash -lc "EDITOR=vim bundle exec rails credentials:edit"
+      cmd: bash -lc "EDITOR=vim bundle exec rails credentials:edit --environment production"
       chdir: /home/ec2-user/raisetech-live8-sample-app/
   when: not masterkey_stat.stat.exists
 
