@@ -86,7 +86,7 @@
     name: build
     path: /home/ec2-user/raisetech-live8-sample-app
 
-- name: Start nginx
+- name: Start Nginx
   become: yes
   ansible.builtin.command:
     cmd: bash -lc "systemctl start nginx"
