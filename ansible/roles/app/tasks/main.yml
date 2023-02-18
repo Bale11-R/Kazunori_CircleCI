@@ -104,7 +104,7 @@
     regexp: '\bconfig.active_storage.service = :amazon\b'
     replace: 'config.active_storage.service = :local'
 
-- name: Set database
+- name: Setting database
   become_user: ec2-user
   block:
   - name: Create database
