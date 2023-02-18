@@ -43,6 +43,7 @@ v16.19.1
 3. ansibleでは各ロールの、「git」→「webpack」→「mysql」→「ruby」→「clone」→「nginx」→「app」の順にセットアップを行う
 4. specでは、「gitインストール」、「nginx起動」、「unicorn起動」、「Webページが表示される（レスポンスで200を返す）」内容のテストを実施
 5. 「Cloudformation」→「Ansible」→「Serverspec」の順で実行されるよう、~/,circleci/config.ymlに記述
+6. 成功後、~/.gitignoreに、「inventory」「RDS.yml」を追加
 
 ### CircleCI環境変数
 - ![CircleCI_env](https://user-images.githubusercontent.com/116282189/219875270-d38f4fad-7436-454f-94a6-a402ccded95f.jpg)
