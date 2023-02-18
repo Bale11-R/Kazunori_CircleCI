@@ -86,7 +86,7 @@
     name: build
     path: /home/ec2-user/raisetech-live8-sample-app
 
-- name: Start nginx
+- name: Start Nginx
   become: yes
   ansible.builtin.command:
     cmd: bash -lc "systemctl start nginx"
@@ -104,7 +104,7 @@
     regexp: '\bconfig.active_storage.service = :amazon\b'
     replace: 'config.active_storage.service = :local'
 
-- name: Set database
+- name: Setting database
   become_user: ec2-user
   block:
   - name: Create database
