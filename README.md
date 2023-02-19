@@ -42,7 +42,7 @@ v16.19.1
 2. ~/ansible/直下の、hosts/inventoryにて、ターゲットのEC2のパブリックアドレスと、ansibleで記述する環境変数を記載
 3. ansibleでは各ロールの、「git」→「webpack」→「mysql」→「ruby」→「clone」→「nginx」→「app」の順にセットアップを行う
 4. specでは、「gitインストール」、「nginx起動」、「unicorn起動」、「Webページが表示される（レスポンスで200を返す）」内容のテストを実施
-5. 「Cloudformation」→「Ansible」→「Serverspec」の順で実行されるよう、~/,circleci/config.ymlに記述
+5. 「Cloudformation」→「Ansible」→「Serverspec」の順で実行されるよう、~/.circleci/config.ymlに記述
 6. 成功後、~/.gitignoreに、「inventory」「RDS.yml」を追加
 
 ### CircleCI環境変数
